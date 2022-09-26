@@ -1,0 +1,397 @@
+{
+    "author": "",
+    "marchers": [
+        {
+            "drillNumber": "M1",
+            "dots": [
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 87.417,
+                        "y": 38.414
+                    }
+                },
+                {
+                    "pictureId": "1",
+                    "coord": {
+                        "x": 80,
+                        "y": 64
+                    }
+                }
+            ]
+        },
+        {
+            "drillNumber": "M2",
+            "dots": [
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 90.407,
+                        "y": 34.644
+                    }
+                },
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 70,
+                        "y": 60
+                    }
+                }
+            ]
+        },
+        {
+            "drillNumber": "M3",
+            "dots": [
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 92.947,
+                        "y": 30.476
+                    }
+                },
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 60,
+                        "y": 56
+                    }
+                }
+            ]
+        },
+        {
+            "drillNumber": "M4",
+            "dots": [
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 94.695,
+                        "y": 25.994
+                    }
+                },
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 90,
+                        "y": 68
+                    }
+                }
+            ]
+        },
+        {
+            "drillNumber": "M5",
+            "dots": [
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 95.293,
+                        "y": 21.15
+                    }
+                },
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 100,
+                        "y": 72
+                    }
+                }
+            ]
+        },
+        {
+            "drillNumber": "M6",
+            "dots": [
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 93.367,
+                        "y": 16.859
+                    }
+                },
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 100,
+                        "y": 72
+                    }
+                }
+            ]
+        },
+        {
+            "drillNumber": "M7",
+            "dots": [
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 88.832,
+                        "y": 15.465
+                    }
+                },
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 100,
+                        "y": 72
+                    }
+                }
+            ]
+        },
+        {
+            "drillNumber": "M8",
+            "dots": [
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 84.142,
+                        "y": 16.492
+                    }
+                },
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 100,
+                        "y": 72
+                    }
+                }
+            ]
+        },
+        {
+            "drillNumber": "M9",
+            "dots": [
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 79.868,
+                        "y": 18.697
+                    }
+                },
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 100,
+                        "y": 72
+                    }
+                }
+            ]
+        },
+        {
+            "drillNumber": "M10",
+            "dots": [
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 75.986,
+                        "y": 21.662
+                    }
+                },
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 100,
+                        "y": 72
+                    }
+                }
+            ]
+        },
+        {
+            "drillNumber": "M11",
+            "dots": [
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 72.551,
+                        "y": 25.028
+                    }
+                },
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 100,
+                        "y": 72
+                    }
+                }
+            ]
+        },
+        {
+            "drillNumber": "M12",
+            "dots": [
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 69.561,
+                        "y": 28.798
+                    }
+                },
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 100,
+                        "y": 72
+                    }
+                }
+            ]
+        },
+        {
+            "drillNumber": "M13",
+            "dots": [
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 67.021,
+                        "y": 32.966
+                    }
+                },
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 100,
+                        "y": 72
+                    }
+                }
+            ]
+        },
+        {
+            "drillNumber": "M14",
+            "dots": [
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 65.273,
+                        "y": 37.448
+                    }
+                },
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 100,
+                        "y": 72
+                    }
+                }
+            ]
+        },
+        {
+            "drillNumber": "M15",
+            "dots": [
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 64.675,
+                        "y": 42.292
+                    }
+                },
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 100,
+                        "y": 72
+                    }
+                }
+            ]
+        },
+        {
+            "drillNumber": "M16",
+            "dots": [
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 66.601,
+                        "y": 46.583
+                    }
+                },
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 100,
+                        "y": 72
+                    }
+                }
+            ]
+        },
+        {
+            "drillNumber": "M17",
+            "dots": [
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 71.136,
+                        "y": 47.977
+                    }
+                },
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 100,
+                        "y": 72
+                    }
+                }
+            ]
+        },
+        {
+            "drillNumber": "M18",
+            "dots": [
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 75.826,
+                        "y": 46.95
+                    }
+                },
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 100,
+                        "y": 72
+                    }
+                }
+            ]
+        },
+        {
+            "drillNumber": "M19",
+            "dots": [
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 80.1,
+                        "y": 44.745
+                    }
+                },
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 100,
+                        "y": 72
+                    }
+                }
+            ]
+        },
+        {
+            "drillNumber": "M20",
+            "dots": [
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 83.982,
+                        "y": 41.78
+                    }
+                },
+                {
+                    "pictureId": "0",
+                    "coord": {
+                        "x": 100,
+                        "y": 72
+                    }
+                }
+            ]
+        }
+    ],
+    "musicFile": "",
+    "pictures": [
+        {
+            "pictureId": "0",
+            "countsToNext": 8
+        },
+        {
+            "pictureId": "1",
+            "countsToNext": 0
+        }
+    ],
+    "projectTitle": "unsaved project"
+}

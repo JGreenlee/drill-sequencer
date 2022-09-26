@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   viewBox="0 0 700 700"
+   width="700"
+   height="700"
+   opacity="1"
+   id="svg854"
+   sodipodi:docname="noise.svg"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview856"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     showgrid="false"
+     width="100px"
+     inkscape:zoom="1.7142857"
+     inkscape:cx="126.875"
+     inkscape:cy="364"
+     inkscape:window-width="1600"
+     inkscape:window-height="815"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg854" />
+  <defs
+     id="defs848">
+    <filter
+       id="nnnoise-filter"
+       x="0"
+       y="0"
+       width="1"
+       height="1"
+       filterUnits="objectBoundingBox"
+       primitiveUnits="userSpaceOnUse"
+       color-interpolation-filters="linearRGB">
+      <feTurbulence
+         seed="15"
+         result="turbulence"
+         id="feTurbulence841"
+         numOctaves="3"
+         stitchTiles="stitch"
+         x="0%"
+         y="0%"
+         height="100%"
+         width="100%"
+         type="turbulence"
+         baseFrequency="0.065" />
+      <feSpecularLighting
+         surfaceScale="12"
+         specularConstant="10"
+         specularExponent="20"
+         lighting-color="hsl(0, 0%, 70%)"
+         x="0%"
+         y="0%"
+         width="100%"
+         height="100%"
+         in="turbulence"
+         result="specularLighting"
+         id="feSpecularLighting845">
+        <feDistantLight
+           azimuth="3"
+           elevation="1"
+           id="feDistantLight843" />
+      </feSpecularLighting>
+    </filter>
+  </defs>
+  <rect
+     width="700"
+     height="700"
+     fill="hsl(0, 100%, 0%)"
+     id="rect850" />
+  <rect
+     fill="hsl(0, 0%, 100%)"
+     id="rect852"
+     width="700"
+     height="700"
+     filter="url(#nnnoise-filter)" />
+</svg>
