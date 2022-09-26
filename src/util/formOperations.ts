@@ -84,7 +84,7 @@ export const makeOval = () => {
         },
         apply: function () {
             console.log('fef');
-            
+
             if (!this.applied) {
                 this.update();
                 this.applied = true;

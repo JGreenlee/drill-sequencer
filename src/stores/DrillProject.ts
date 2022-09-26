@@ -26,11 +26,11 @@ export const projectDataStore = defineStore('projectData', () => {
   watch(pending, () => {
     if (pending.update) {
       console.log('trying update');
-      
+
       pending.update();
     } else {
       console.log('not found upda');
-      
+
     }
   });
 
