@@ -1,8 +1,7 @@
 <template>
   <div ref="marcherEl" :class="{marcher: true, selected: isSelected}" draggable="true" :drillNumber="drillNumber"
     :storedX="storedCoord.x" :storedY="storedCoord.y" :x="util.roundCalc(currentCoord.x)"
-    :y="util.roundCalc(currentCoord.y)" :bearing="coordFromSel.bearing" :distSelX="coordFromSel.x"
-    :distSelY="coordFromSel.y"
+    :y="util.roundCalc(currentCoord.y)" :storedBearing="coordFromSel.bearing"
     :style="{left: util.roundUi(currentCoord.x) / 1.6 + '%', top: (84 - util.roundUi(currentCoord.y)) / 0.84 + '%'}"
     @click.exact="$emit('tap', '', drillNumber)" @click.shift="$emit('tap', 'shift', drillNumber)">
     <div ref="selectable" class="selectable">
@@ -20,7 +19,7 @@ import type { Coord } from '../stores/ProjectTypes';
 import { onMounted, reactive, ref, type Ref } from 'vue';
 import { computed } from '@vue/reactivity';
 
-import * as util from '../util/util'
+import * as util from '../util/util';
 
 // @Component({
 //   emits: ['tap']
@@ -44,9 +43,9 @@ const x = computed(() => currentCoord.x);
 const y = computed(() => currentCoord.y);
 
 const coordFromSel = reactive({
-  x: undefined,
-  y: undefined,
-  bearing: undefined
+  x: computed(() => currentCoord.x - proj.selection.center.x),
+  y: computed(() => currentCoord.y - proj.selection.center.y),
+  bearing: computed(() => util.calcBearing(proj.selection.center.x, proj.selection.center.y, storedCoord.value.x, storedCoord.value.y))
 });
 
 const isSelected = computed(() => {
@@ -61,21 +60,18 @@ onMounted(() => {
   isMounted.value = true;
 });
 
-// onUpdated(() => {
-//   if (!marcherEl.value) return;
-//   const coordX = marcherEl.value.getAttribute('x');
-//   const coordY = marcherEl.value.getAttribute('y');
-//   if (coordX && coordY) {
-//     currentCoord.x = Number(coordX);
-//     currentCoord.y = Number(coordY);
-//   }
-// });
-
 const storedCoord = computed(() => proj.getMarcherDot(props.drillNumber, proj.currentPictureId)?.coord || { x: 999, y: 999 });
 
+function setDisplayCoord(newX, newY) {
+  marcherEl.value!.style.left = newX / 1.6 + '%';
+  marcherEl.value!.style.top = (84 - newY) / .84 + '%';
+}
+
 function setCurrentCoord(newX, newY) {
-  currentCoord.x = util.roundCalc(util.clamp(newX, 0, 160));  
+  console.time('setc')
+  currentCoord.x = util.roundCalc(util.clamp(newX, 0, 160));
   currentCoord.y = util.roundCalc(util.clamp(newY, 0, 84));
+  console.timeEnd('setc');
 }
 
 function setStoredCoord(newX, newY) {
@@ -92,8 +88,9 @@ defineExpose({
   currentCoord, x, y,
   marcher: marcherEl,
   storedCoord,
-  relativeCoordToSelection: coordFromSel,
+  coordFromSel,
   setCurrentCoord,
+  setDisplayCoord,
   setStoredCoord,
   applyCurrentCoord,
 });
@@ -105,7 +102,6 @@ defineExpose({
   position: absolute;
   border-radius: 50%;
   text-align: center;
-  // transition: transform .5s, filter .5s;
   transition: left .3s, top .3s, filter .5s;
   translate: -50% -100%;
   width: 1%;
@@ -194,7 +190,7 @@ defineExpose({
 
 .marcher.selected .selectable {
   filter: brightness(110%) saturate(150%);
-  outline: .1em solid hsl(270 100% 39% / 0.6);
-  background-color: hsl(270 100% 39% / 0.3);
+  outline: .1em solid hsl(var(--hue-selection) 100% 39% / 0.6);
+  background-color: hsl(var(--hue-selection) 100% 39% / 0.3);
 }
 </style>

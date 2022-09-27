@@ -23,8 +23,8 @@
      showgrid="false"
      width="100px"
      inkscape:zoom="1.7142857"
-     inkscape:cx="126.875"
-     inkscape:cy="364"
+     inkscape:cx="359.625"
+     inkscape:cy="309.75"
      inkscape:window-width="1600"
      inkscape:window-height="815"
      inkscape:window-x="-9"
@@ -43,17 +43,17 @@
        primitiveUnits="userSpaceOnUse"
        color-interpolation-filters="linearRGB">
       <feTurbulence
-         seed="15"
+         seed="0"
          result="turbulence"
          id="feTurbulence841"
          numOctaves="3"
-         stitchTiles="stitch"
          x="0%"
          y="0%"
          height="100%"
          width="100%"
          type="turbulence"
-         baseFrequency="0.065" />
+         baseFrequency="1"
+         stitchTiles="stitch" />
       <feSpecularLighting
          surfaceScale="12"
          specularConstant="10"

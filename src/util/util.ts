@@ -77,9 +77,9 @@ export function clamp(num, min, max) {
     return Math.min(Math.max(num, min), max);
 }
 
-export function marcherDistanceToCenter(mEl) {
-    const x = Number(mEl.getAttribute('distSelX'));
-    const y = Number(mEl.getAttribute('distSelY'));
+export function marcherDistanceToCenter(m) {
+    const x = m.coordFromSel.x;
+    const y = m.coordFromSel.y;
     return Math.sqrt(x * x + y * y);
 }
 
@@ -121,11 +121,11 @@ const toRadians = (deg) =>
 const toDegrees = (rad) =>
     rad * (180 / Math.PI);
 
-export function rotate(o, p, deg) {
+export function rotate(p, deg, o?) {
     const a = -toRadians(deg);
     return {
-        x: Math.cos(a) * (p.x - o.x) - Math.sin(a) * (p.y - o.y) + o.x,
-        y: Math.sin(a) * (p.x - o.x) + Math.cos(a) * (p.y - o.y) + o.y
+        x: Math.cos(a) * (p.x - (o?.x || 0)) - Math.sin(a) * (p.y - (o?.y||0)) + (o?.x||0),
+        y: Math.sin(a) * (p.x - (o?.x || 0)) + Math.cos(a) * (p.y - (o?.y||0)) + (o?.y||0)
     }
 }
 
@@ -175,5 +175,3 @@ function computeDpt(r1, r2, theta) {
     dp = Math.sqrt(dpt_sin + dpt_cos);
     return dp;
 }
-
-console.log(getPointsAlongEllipse(10,20,10));

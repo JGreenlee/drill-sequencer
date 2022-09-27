@@ -1,12 +1,12 @@
-import { reactive, type Ref } from "vue";
-import { projectDataStore } from "./DrillProject";
+import { computed } from "@vue/reactivity";
+import { reactive, type ComputedRef } from "vue";
 
 import * as util from '../util/util'
+import type { Coord } from "./ProjectTypes";
 
 export class MarcherSelection {
 
     targets: { items: MarcherSelectionItem[] } = reactive({ items: [] });
-    center = { x: 0, y: 0 };
     asComponent;
     // proj = projectDataStore();
 
@@ -25,7 +25,6 @@ export class MarcherSelection {
         } else if (e && this.includes(e)) {
             this.targets.items = this.targets.items.filter(i => i.element != e && i.component != e);
         }
-        this.updateCenter();
     }
     select(marcherEl, isReplace?: boolean) {
         if (!marcherEl) return console.error('no marcher');
@@ -36,7 +35,6 @@ export class MarcherSelection {
         } else if (!this.includes(marcherEl)) {
             this.targets.items.push(item);
         }
-        this.updateCenter();
     }
     add(toAdd: any[]) {
         toAdd.forEach((e) => {
@@ -44,27 +42,33 @@ export class MarcherSelection {
         })
     }
     remove(toRemove: any[]) {
-        toRemove.forEach((e) => {            
+        toRemove.forEach((e) => {
             this.unselect(e);
         });
     }
-    updateCenter() {
+    center: Coord | ComputedRef<Coord> = computed<Coord>(() => {        
         let sumX = 0, sumY = 0;
         this.targets.items.forEach((t) => {
             sumX += t.component.storedCoord.x;
             sumY += t.component.storedCoord.y;
         });
-        this.center = { x: util.roundCalc(sumX / this.length), y: util.roundCalc(sumY / this.length) };
+        return {
+            x: util.roundCalc(sumX / (this.length || 1)),
+            y: util.roundCalc(sumY / (this.length || 1))
+        };
+    });
 
+    centerCurrent : Coord | ComputedRef<Coord> = computed(() => {
+        let sumX = 0, sumY = 0;
         this.targets.items.forEach((i) => {
-            const c = i.component;
-            const myX = c.storedCoord.x;
-            const myY = c.storedCoord.y;
-            c.relativeCoordToSelection.x = myX - this.center.x;
-            c.relativeCoordToSelection.y = myY - this.center.y;
-            c.relativeCoordToSelection.bearing = util.calcBearing(this.center.x, this.center.y, myX, myY);
+            sumX += i.component.currentCoord.x;
+            sumY += i.component.currentCoord.y;
         });
-    }
+        return {
+            x: util.roundCalc(sumX / (this.length || 1)),
+            y: util.roundCalc(sumY / (this.length || 1))
+        };
+    });
 }
 
 export class MarcherSelectionItem {

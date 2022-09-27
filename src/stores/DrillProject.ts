@@ -3,7 +3,9 @@ import { MarcherSelection } from "./MarcherSelection";
 import { useStorage } from '@vueuse/core'
 import { defineStore } from 'pinia';
 import { computed, reactive, ref, watch, type Ref } from 'vue';
-import * as starterProject from '../util/starterProject.json'
+import * as starterProject from '../util/starterBlock.json'
+import type { Form } from '@/forms/Form';
+import { GenericForm } from '@/forms/GenericForm';
 
 export const projectDataStore = defineStore('projectData', () => {
 
@@ -15,22 +17,14 @@ export const projectDataStore = defineStore('projectData', () => {
 
   const hoveredEl = ref<HTMLDivElement>();
 
-  undo: {
-    omit: ['pd', 'selection', 'hoveredEl', 'pending', 'marcherRefs']
-  }
-
   // public
   const selection = reactive(new MarcherSelection(asComponent));
-  const pending = ref<any>(null);
-
-  watch(pending, () => {
-    if (pending.update) {
-      console.log('trying update');
-
-      pending.update();
+  const form = ref<Form | null>();
+  const formOrGeneric = computed(() => {
+    if (form.value && !form.value.applied) {
+      return form.value;
     } else {
-      console.log('not found upda');
-
+      return form.value = new GenericForm(selection);
     }
   });
 
@@ -96,7 +90,8 @@ export const projectDataStore = defineStore('projectData', () => {
   return {
     currentPictureId,
     selection,
-    pending,
+    form,
+    formOrGeneric,
     hoveredEl,
     snapToGrid,
     getTitle,

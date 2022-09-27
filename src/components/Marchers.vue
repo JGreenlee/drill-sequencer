@@ -4,7 +4,7 @@
         @dragstart.shift="onDragStart($event,true)"
         @drag="onDrag" @dragend="onDragEnd"
         @dragenter="dropAllowed" @dragover="dropAllowed"
-        @mousedown.self.exact="if (proj.pending) proj.pending.apply(); proj.selection.unselect()">
+        @mousedown.self.exact="if (proj.form) proj.form.apply(); proj.selection.unselect()">
         <Marcher v-for="marcher in proj.getMarchers()" :drillNumber="marcher.drillNumber" @tap="onMarcherTap"
             @mouseover="e => proj.hoveredEl = e.target.closest('.marcher')"
             @mouseout="e => proj.hoveredEl == e.target.closest('.marcher') ? proj.hoveredEl = undefined : ''"
@@ -27,7 +27,6 @@ import * as util from '../util/util';
 const proj = projectDataStore();
 const marchersEl: Ref<HTMLDivElement | null> = ref(null);
 const marcherRefs: Ref<any[]> = ref([]);
-let grabbedAt: Coord;
 
 onMounted(() => {
     proj.setMarcherRefs(marcherRefs);
@@ -52,40 +51,32 @@ function fieldCoords(e, round) {
             y: (parentBounds.bottom - e.clientY) / marchersEl.value.clientHeight
         }
     }
-
     if (coord) {
-
         coord.x = coord.x * 160
         coord.y = coord.y * 84;
-
-        if (round) {
-            coord.x = Math.round(coord.x);
-            coord.y = Math.round(coord.y);
-        }
     }
-
     return coord;
 }
 
-function calcPositionOnDrag(e) {
+function calcPositionOnDrag(e, displayOnly?) {
 
     const coord = fieldCoords(e, false);
+    console.log('lfejf');
 
-    if (coord && proj.selection.length) {
-        proj.pending.deltaX = coord.x - proj.pending.startX;
-        proj.pending.deltaY = coord.y - proj.pending.startY;
-        proj.pending.update();
+    if (coord && proj.form?.dragStart && proj.form.dragStartCenter) {
+        proj.form.dragDeltaX = coord.x - proj.form.dragStart.x;
+        proj.form.centerX = proj.form.dragStartCenter.x + proj.form.dragDeltaX;
+        proj.form.dragDeltaY = coord.y - proj.form.dragStart.y;
+        proj.form.centerY = proj.form.dragStartCenter.y + proj.form.dragDeltaY;
+        proj.form.update(displayOnly);
     }
 }
 
-function updateDisplayCoords(target, newX, newY) {
-    const marcher = proj.asComponent(target);
-    marcher.setCurrentCoord(newX, newY);
-}
-
 function onDrag(e?: MouseEvent) {
-    if (e && e.target instanceof HTMLElement && (e.target as HTMLElement).classList.contains('marcher')) {
-        calcPositionOnDrag(e);
+    if (e!.offsetX % 2 == 0) {
+        if ((e?.target as HTMLElement).classList.contains('marcher')) {
+            calcPositionOnDrag(e, true);
+        }
     }
 }
 
@@ -104,48 +95,11 @@ function onDragStart(e, isShift: boolean) {
             proj.selection.select(mEl, !notReplace);
         }
 
-        // proj.asComponent(e.target);
-
         const startCoords = fieldCoords(e, false);
-        console.log('startcoords', startCoords);
 
-        proj.pending = {
-            startX: startCoords?.x,
-            startY: startCoords?.y,
-            deltaX: 0,
-            deltaY: 0,
-            options: ['deltaX', 'deltaY', 'startX', 'startY'],
-            applied: false,
-            update: function () {
-                proj.selection.targets.items.forEach(i => {
-                    const m = i.component;
-                    if (!m) return;
-                    const newX = m.storedCoord.x + this.deltaX;
-                    const newY = m.storedCoord.y + this.deltaY;
-                    updateDisplayCoords(i.element, newX, newY);
-                });
-            },
-            apply: function () {
-                if (!this.applied) {
-                    this.update();
-                    this.applied = true;
-                    if (proj.selection.length) {
-                        proj.selection.targets.items.forEach(i => {
-                            i.component.applyCurrentCoord();
-                        });
-                    }
-                    proj.selection.updateCenter();
-                    this.applied = true;
-                }
-            },
-            cancel: function () {
-                if (proj.selection.length) {
-                    proj.selection.targets.items.forEach(i => {
-                        const s = i.component.storedCoord;
-                        i.component.setCurrentCoord(s.x, s.y);
-                    });
-                }
-            }
+        if (startCoords) {
+            proj.formOrGeneric.dragStart = { x: startCoords?.x, y: startCoords?.y };
+            proj.formOrGeneric.dragStartCenter = { ...proj.selection.centerCurrent };
         }
     } else {
         e.preventDefault();
@@ -153,12 +107,9 @@ function onDragStart(e, isShift: boolean) {
 }
 
 function onDragEnd(e) {
-    setTimeout(() => {
-        if (proj.pending) {
-            proj.pending.apply();
-        }
-    }, 150);
-
+    if ((e?.target as HTMLElement).classList.contains('marcher')) {
+        calcPositionOnDrag(e);
+    }
     marchersEl.value?.classList.remove('no-transition');
 }
 

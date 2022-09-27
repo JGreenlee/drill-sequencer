@@ -7,19 +7,19 @@
         @keyup.space="debug()"
         @keyup.ctrl.z="proj.undo()"
         @keyup.ctrl.y="proj.redo()"
-        @keyup.o="proj.pending = makeOval()"
+        @keyup.o="(proj.form as any) = new CircleForm(proj.selection)"
         @keyup.b="makeBlock(true)"
-        @keyup.+="scaleForm(1.25, 1.25, false)"
-        @keyup.-="scaleForm(.8,.8,false)"
+        @keyup.+="proj.formOrGeneric.scale(1.25, 1.25)"
+        @keyup.-="proj.formOrGeneric.scale(.8, .8)"
         @keyup.a="selectAll"
-        @keyup.[="rotateForm(-8)"
-        @keyup.]="rotateForm(8)"
-        @keyup.up="moveForm(0, 2)"
-        @keyup.right="moveForm(2, 0)"
-        @keyup.down="moveForm(0, -2)"
-        @keyup.left="moveForm(-2, 0)"
-        @keyup.esc.stop="proj.pending.cancel(); proj.pending=''" />
-
+        @keyup.[="proj.formOrGeneric.rotate(-8)"
+        @keyup.]="proj.formOrGeneric.rotate(8)"
+        @keyup.up="proj.formOrGeneric.move(0, 2)"
+        @keyup.right="proj.formOrGeneric.move(2, 0)"
+        @keyup.down="proj.formOrGeneric.move(0, -2)"
+        @keyup.left="proj.formOrGeneric.move(-2, 0)"
+        @keyup.esc.stop="escape"
+        @keyup.enter.stop="proj.form?.apply()" />
       <div class="field" ref="field" :class="{perspective: isPerspective}">
         <div class="side side1">
           <div v-for="n in 10" v-bind:num-labels="10">
@@ -42,7 +42,6 @@
       </div>
     </div>
     <button class="toggle-perspective" @click="isPerspective=!isPerspective;">perspective</button>
-    <button class="toggle-perspective" @click="proj.reset(true, true, true)">reset</button>
     <Selecto ref="selecto" :dragCondition="e => e.inputEvent.target.classList.contains('marchers')"
       dragContainer=".marchers" v-bind:selectableTargets='[".marchers .selectable"]' v-bind:hitRate='0'
       v-bind:selectByClick='true' v-bind:selectFromInside='false' v-bind:toggleContinueSelect='["shift"]'
@@ -68,24 +67,23 @@
         {{ util.fieldY(proj.hoveredEl?.getAttribute('y'))}}
       </div>
     </div>
-    <div class="pending info" v-if="proj.pending">
+    <div class="pending info" v-if="proj.form">
       <div>
-        {{ proj.pending.applied ? 'changes saved ✅' : 'changes pending...' }}
+        {{ proj.form.applied ? 'changes saved ✅' : 'changes pending...' }}
       </div>
-      <div v-if="!proj.pending.applied">
-        <div v-for="(v,k) in proj.pending.args">
+      <div v-if="!proj.form.applied" class="pending-options">
+        <div v-for="(v,k) in proj.form.args" class="pendingform">
           <p>{{v.name}}</p>
-          <input :type="v.type" step="any" :placeholder="v+''" :value="util.roundUi(proj.pending.args[k].val)"
-            @keyup.stop="(e:any) => {proj.pending.update(); e.target.setAttribute('step', '0.1')}"
-            @input="(e:any) => {proj.pending.args[k].val = +(e.target[v.bindAttr||'value']); proj.pending.update()}">
+          <input :type="v.type" step="any" :placeholder="v+''" :value="util.roundUi(proj.form[k])"
+            @keyup.stop="(e:any) => {proj.form?.update(); e.target.setAttribute('step', '0.1')}"
+            @input="(e:any) => {proj.form![k] = +(e.target[v.bindAttr||'value']); proj.form?.update();}">
         </div>
-        <button @click="proj.pending.apply()">APPLY</button>
-        <button @click="proj.pending.cancel(); proj.pending = ''">CANCEL</button>
+        <button @click="proj.form?.apply()">APPLY</button>
+        <button @click=" proj.form?.cancel(); proj.form=null">CANCEL</button>
       </div>
     </div>
   </main>
 </template>
-
 <script setup lang="ts">
 
 import KeyEvents from '../components/keyevents.vue'
@@ -93,11 +91,11 @@ import Marchers from '../components/Marchers.vue'
 import { projectDataStore } from '@/stores/DrillProject';
 import { onMounted, ref, type Ref } from 'vue';
 import Selecto from 'vue3-selecto';
-import { makeOval, makeBlock, scaleForm, rotateForm, moveForm } from '../util/formOperations';
+import { makeBlock } from '../util/formOperations';
 
 import * as util from '../util/util';
+import { CircleForm } from '@/forms/CircleForm';
 
-const log = console.log;
 const proj = projectDataStore();
 const marchers = ref<any>(null);
 let isPerspective: Ref<boolean> = ref(false);
@@ -119,7 +117,7 @@ function resizeField() {
 
 // for debugging
 function debug() {
-  console.log(proj.pending);
+  console.log(proj.form);
 }
 
 onMounted(() => {
@@ -137,6 +135,14 @@ function selectAll() {
   field.value?.querySelectorAll('.marcher').forEach(e => {
     proj.selection.select(e);
   });
+}
+
+function escape() {
+  if (proj.form) {
+    proj.form.cancel(); proj.form = null;
+  } else {
+    proj.reset(true, true, true);
+  }
 }
 
 </script>
@@ -162,13 +168,15 @@ main {
 
 .field {
   --field-width: 95vw;
-  --dark-turf-green: hsl(130 3% 95% / 1);
-  --light-turf-green: hsl(130 3% 100% / 1);
-  --yardlines-white: hsl(130 5% 50% / 1);
-  --yardline-numbers-white: hsl(130 3% 36% / .5);
+  --hue-editor: 240;
+  --hue-selection: 280;
+  --dark-turf-green: hsl(var(--hue-editor) 3% 95% / 1);
+  --light-turf-green: hsl(var(--hue-editor) 3% 100% / 1);
+  --yardlines-white: hsl(var(--hue-editor) 5% 50% / 1);
+  --yardline-numbers-white: hsl(var(--hue-editor) 3% 36% / .5);
   --yardline-thickness: .05vw;
-  --tpl-major-grid-color: hsl(130 50% 17% / .5);
-  --tpl-minor-grid-color: hsl(130 50% 37% / 0.25);
+  --tpl-major-grid-color: hsl(var(--hue-editor) 50% 17% / .5);
+  --tpl-minor-grid-color: hsl(var(--hue-editor) 50% 37% / 0.25);
   --cam-level: .5;
   --x-rotation: calc(90deg * (1 - var(--cam-level)));
   --hash-distance: 33.4%;
@@ -395,13 +403,29 @@ main {
 .pending {
   left: 0;
   top: 0;
-}
 
-.pending input {
-  min-width: 100%;
-  max-width: 6rem;
-  &[type="checkbox"] {
-    min-width: unset;
+  & input {
+    min-width: 100%;
+    max-width: 3rem;
+
+    &[type="checkbox"] {
+      min-width: unset;
+    }
+  }
+
+  & .pending-options {
+    display: grid;
+    gap: .12rem;
+    grid-template-columns: 1fr 1fr;
+    max-width: 8rem;
+  }
+
+  & .pending-arg {
+    display: inline-block;
+  }
+
+  & .pending-arg.newline {
+    display: block;
   }
 }
 
@@ -410,25 +434,25 @@ main {
   height: 0px;
   position: absolute;
   width: 0px;
-}
 
-.handle.nw {
-  left: 0;
-  top: 0;
-}
+  &.nw {
+    left: 0;
+    top: 0;
+  }
 
-.handle.ne {
-  right: 0;
-  top: 0;
-}
+  &.ne {
+    right: 0;
+    top: 0;
+  }
 
-.handle.se {
-  right: 0;
-  bottom: 0;
-}
+  &.se {
+    right: 0;
+    bottom: 0;
+  }
 
-.handle.sw {
-  left: 0;
-  bottom: 0;
+  &.sw {
+    left: 0;
+    bottom: 0;
+  }
 }
 </style>

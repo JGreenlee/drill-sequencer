@@ -10,7 +10,7 @@ import './main.css'
 const app = createApp(App)
 
 const pinia = createPinia();
-pinia.use(PiniaUndo)
+// pinia.use(PiniaUndo)
 app.use(pinia)
 app.use(router)
 
