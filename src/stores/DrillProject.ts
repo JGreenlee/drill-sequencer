@@ -208,13 +208,6 @@ export const usePdStore = defineStore('projectData', () => {
     }
   }
 
-  const undoable = {
-    pd,
-    form,
-    storedCurrentPictureId,
-    snapToGrid,
-  }
-
   const undo = () => {
     const undo = stack.undo();
     console.log('undo', undo.pd.value);
