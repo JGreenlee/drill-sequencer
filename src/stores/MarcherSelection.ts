@@ -28,7 +28,6 @@ export class MarcherSelection {
     }
     select(marcherEl, isReplace?: boolean) {
         if (!marcherEl) return console.error('no marcher');
-        // marcher.classList.add('selected');
         const item = new MarcherSelectionItem(marcherEl, this.asComponent);
         if (isReplace) {
             this.targets.items = [item];

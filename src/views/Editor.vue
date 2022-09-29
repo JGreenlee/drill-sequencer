@@ -62,7 +62,6 @@ const wrapper: any = ref<HTMLDivElement>();
 const field = ref();
 
 // for debugging
-const log = console.log;
 function debug() {
 
 }
@@ -89,7 +88,6 @@ function resizeField() {
 }
 
 function playPause() {
-  log(field.value.marchers);
   field.value.marchers.isAnimating = !field.value.marchers.isAnimating;
   field.value.marchers.marchersEl.classList.toggle('animating');
   field.value.field.addEventListener('animationend', animationEnd)
@@ -99,9 +97,7 @@ function animationEnd(e) {
   if (e.animationName != 'empty') return;
   field.value.field.removeEventListener('animationend', animationEnd);
   const nextPictureId = proj.nextPictureId;
-  log('next', nextPictureId)
   if (nextPictureId) {
-    // log('setnext', nextPictureId)
     proj.tempCurrentPictureId = nextPictureId;
     field.value.field.addEventListener('animationend', animationEnd);
     if (!proj.nextPictureId) {

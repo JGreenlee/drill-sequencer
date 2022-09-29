@@ -27,7 +27,6 @@ function createStack(current: string) {
       stack.length = index + 1;
       index++;
       stack.push(value);
-      console.log('pushed', stack);
       return update()
     },
     undo: () => {
@@ -50,8 +49,6 @@ function getState() {
 function patch(p) {
   const store = usePdStore();
   store.$patch(p);
-  console.log(p);
-
   if (p.form) {
     setTimeout(() => store.form?.recalculate())
   }
@@ -79,8 +76,9 @@ export const usePdStore = defineStore('projectData', () => {
   function asComponent(marcherEl: HTMLDivElement) {
     const dn = marcherEl.getAttribute('drillNumber');
     if (!dn) return console.error('marcher does not have drillNumber', marcherEl);
+    console.log('mrefs', marcherRefs);
     const m = marcherRefs.value.find(c => c.drillNumber == dn);
-    if (!m) return console.error("couldn't find component of " + marcherEl);
+    if (!m) return console.error("couldn't find component of " + dn);
     return m;
   }
 
@@ -210,12 +208,10 @@ export const usePdStore = defineStore('projectData', () => {
 
   const undo = () => {
     const undo = stack.undo();
-    console.log('undo', undo.pd.value);
     patch(undo);
   }
   const redo = () => {
-    const redo = stack.redo()
-    console.log('redo', redo.pd.value.marchers[0].dots[0].coord.x);
+    const redo = stack.redo();
     patch(redo);
   }
   const pushChange = () => {

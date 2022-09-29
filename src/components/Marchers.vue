@@ -33,7 +33,9 @@ const isAnimating = ref(false);
 
 onMounted(() => {
     proj.setMarcherRefs(marcherRefs);
-    setTimeout(() => marchersEl.value?.classList.remove('no-transition'), 100);
+    setTimeout(() => {
+        marchersEl.value?.classList.remove('no-transition')
+    }, 100);
 });
 
 function fieldCoords(e, round) {

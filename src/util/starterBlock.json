@@ -5,63 +5,54 @@
             "drillNumber": "M1",
             "dots": {
                 "0": {
-                    "pictureId": "0",
                     "coord": {
                         "x": 83.976,
                         "y": 38.024
                     }
                 },
                 "1": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 80,
                         "y": 36.377
                     }
                 },
                 "2": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 80,
                         "y": 32.576
                     }
                 },
                 "3": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 80,
                         "y": 34
                     }
                 },
                 "4": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 70.985,
                         "y": 35.444
                     }
                 },
                 "5": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 74.658,
                         "y": 43.053
                     }
                 },
                 "6": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 76.718,
                         "y": 40.093
                     }
                 },
                 "7": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 71.987,
                         "y": 37.344
                     }
                 },
                 "8": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 71.106,
                         "y": 42.262
@@ -73,63 +64,54 @@
             "drillNumber": "M2",
             "dots": {
                 "0": {
-                    "pictureId": "0",
                     "coord": {
                         "x": 80,
                         "y": 40.674
                     }
                 },
                 "1": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 79.062,
                         "y": 41.062
                     }
                 },
                 "2": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 72.378,
                         "y": 36.459
                     }
                 },
                 "3": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 69.4,
                         "y": 36.4
                     }
                 },
                 "4": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 69.401,
                         "y": 45.445
                     }
                 },
                 "5": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 78.83,
                         "y": 49.996
                     }
                 },
                 "6": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 73.436,
                         "y": 43.907
                     }
                 },
                 "7": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 63.975,
                         "y": 46.656
                     }
                 },
                 "8": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 72.015,
                         "y": 48.528
@@ -141,63 +123,54 @@
             "drillNumber": "M3",
             "dots": {
                 "0": {
-                    "pictureId": "0",
                     "coord": {
                         "x": 81.988,
                         "y": 40.674
                     }
                 },
                 "1": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 80.468,
                         "y": 39.657
                     }
                 },
                 "2": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 82.913,
                         "y": 33.037
                     }
                 },
                 "3": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 83.6,
                         "y": 34.2
                     }
                 },
                 "4": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 73.449,
                         "y": 32.98
                     }
                 },
                 "5": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 74.901,
                         "y": 40.276
                     }
                 },
                 "6": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 80,
                         "y": 40.093
                     }
                 },
                 "7": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 80,
                         "y": 37.344
                     }
                 },
                 "8": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 76.733,
                         "y": 39.999
@@ -209,63 +182,54 @@
             "drillNumber": "M4",
             "dots": {
                 "0": {
-                    "pictureId": "0",
                     "coord": {
                         "x": 78.012,
                         "y": 40.674
                     }
                 },
                 "1": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 77.657,
                         "y": 42.468
                     }
                 },
                 "2": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 71.037,
                         "y": 44.913
                     }
                 },
                 "3": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 66.6,
                         "y": 45.3
                     }
                 },
                 "4": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 76.56,
                         "y": 52.604
                     }
                 },
                 "5": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 86.898,
                         "y": 50.702
                     }
                 },
                 "6": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 80,
                         "y": 47.721
                     }
                 },
                 "7": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 80,
                         "y": 55.967
                     }
                 },
                 "8": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 89.8,
                         "y": 48.005
@@ -277,63 +241,54 @@
             "drillNumber": "M5",
             "dots": {
                 "0": {
-                    "pictureId": "0",
                     "coord": {
                         "x": 78.012,
                         "y": 43.326
                     }
                 },
                 "1": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 79.532,
                         "y": 44.343
                     }
                 },
                 "2": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 77.087,
                         "y": 50.963
                     }
                 },
                 "3": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 76.4,
                         "y": 49.8
                     }
                 },
                 "4": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 86.561,
                         "y": 51.02
                     }
                 },
                 "5": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 85.109,
                         "y": 43.724
                     }
                 },
                 "6": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 80,
                         "y": 43.907
                     }
                 },
                 "7": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 80,
                         "y": 46.656
                     }
                 },
                 "8": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 83.267,
                         "y": 44.002
@@ -345,63 +300,54 @@
             "drillNumber": "M6",
             "dots": {
                 "0": {
-                    "pictureId": "0",
                     "coord": {
                         "x": 76.024,
                         "y": 40.674
                     }
                 },
                 "1": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 76.251,
                         "y": 43.874
                     }
                 },
                 "2": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 72.378,
                         "y": 47.541
                     }
                 },
                 "3": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 69.5,
                         "y": 47.6
                     }
                 },
                 "4": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 80.005,
                         "y": 53.15
                     }
                 },
                 "5": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 89.291,
                         "y": 49.266
                     }
                 },
                 "6": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 86.564,
                         "y": 47.721
                     }
                 },
                 "7": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 96.025,
                         "y": 55.967
                     }
                 },
                 "8": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 101.054,
                         "y": 43.48
@@ -413,63 +359,54 @@
             "drillNumber": "M7",
             "dots": {
                 "0": {
-                    "pictureId": "0",
                     "coord": {
                         "x": 76.024,
                         "y": 38.024
                     }
                 },
                 "1": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 74.377,
                         "y": 42
                     }
                 },
                 "2": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 70.576,
                         "y": 42
                     }
                 },
                 "3": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 65.3,
                         "y": 42
                     }
                 },
                 "4": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 73.449,
                         "y": 51.02
                     }
                 },
                 "5": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 84.178,
                         "y": 51.332
                     }
                 },
                 "6": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 76.718,
                         "y": 47.721
                     }
                 },
                 "7": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 71.987,
                         "y": 55.967
                     }
                 },
                 "8": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 84.174,
                         "y": 50.267
@@ -481,63 +418,54 @@
             "drillNumber": "M8",
             "dots": {
                 "0": {
-                    "pictureId": "0",
                     "coord": {
                         "x": 76.024,
                         "y": 43.326
                     }
                 },
                 "1": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 78.126,
                         "y": 45.749
                     }
                 },
                 "2": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 74.459,
                         "y": 49.622
                     }
                 },
                 "3": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 72.8,
                         "y": 49
                     }
                 },
                 "4": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 83.45,
                         "y": 52.604
                     }
                 },
                 "5": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 84.016,
                         "y": 46.294
                     }
                 },
                 "6": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 83.282,
                         "y": 47.721
                     }
                 },
                 "7": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 88.013,
                         "y": 55.967
                     }
                 },
                 "8": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 95.427,
                         "y": 45.742
@@ -549,63 +477,54 @@
             "drillNumber": "M9",
             "dots": {
                 "0": {
-                    "pictureId": "0",
                     "coord": {
                         "x": 78.012,
                         "y": 38.024
                     }
                 },
                 "1": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 75.783,
                         "y": 40.594
                     }
                 },
                 "2": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 71.037,
                         "y": 39.087
                     }
                 },
                 "3": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 66.6,
                         "y": 38.7
                     }
                 },
                 "4": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 70.985,
                         "y": 48.556
                     }
                 },
                 "5": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 81.401,
                         "y": 51.089
                     }
                 },
                 "6": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 73.436,
                         "y": 47.721
                     }
                 },
                 "7": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 63.975,
                         "y": 55.967
                     }
                 },
                 "8": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 78.548,
                         "y": 52.53
@@ -617,63 +536,54 @@
             "drillNumber": "M10",
             "dots": {
                 "0": {
-                    "pictureId": "0",
                     "coord": {
                         "x": 80,
                         "y": 38.024
                     }
                 },
                 "1": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 77.189,
                         "y": 39.189
                     }
                 },
                 "2": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 74.459,
                         "y": 34.378
                     }
                 },
                 "3": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 72.8,
                         "y": 35
                     }
                 },
                 "4": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 68.855,
                         "y": 42
                     }
                 },
                 "5": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 76.725,
                         "y": 48.166
                     }
                 },
                 "6": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 76.718,
                         "y": 43.907
                     }
                 },
                 "7": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 71.987,
                         "y": 46.656
                     }
                 },
                 "8": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 77.641,
                         "y": 46.265
@@ -685,63 +595,54 @@
             "drillNumber": "M11",
             "dots": {
                 "0": {
-                    "pictureId": "0",
                     "coord": {
                         "x": 81.988,
                         "y": 38.024
                     }
                 },
                 "1": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 78.594,
                         "y": 37.783
                     }
                 },
                 "2": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 77.087,
                         "y": 33.037
                     }
                 },
                 "3": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 76.4,
                         "y": 34.2
                     }
                 },
                 "4": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 69.401,
                         "y": 38.555
                     }
                 },
                 "5": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 75.287,
                         "y": 45.774
                     }
                 },
                 "6": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 73.436,
                         "y": 40.093
                     }
                 },
                 "7": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 63.975,
                         "y": 37.344
                     }
                 },
                 "8": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 65.479,
                         "y": 44.524
@@ -753,63 +654,54 @@
             "drillNumber": "M12",
             "dots": {
                 "0": {
-                    "pictureId": "0",
                     "coord": {
                         "x": 76.024,
                         "y": 45.976
                     }
                 },
                 "1": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 80,
                         "y": 47.623
                     }
                 },
                 "2": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 80,
                         "y": 51.424
                     }
                 },
                 "3": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 80,
                         "y": 50
                     }
                 },
                 "4": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 89.025,
                         "y": 48.556
                     }
                 },
                 "5": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 85.352,
                         "y": 40.947
                     }
                 },
                 "6": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 83.282,
                         "y": 43.907
                     }
                 },
                 "7": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 88.013,
                         "y": 46.656
                     }
                 },
                 "8": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 88.893,
                         "y": 41.739
@@ -821,63 +713,54 @@
             "drillNumber": "M13",
             "dots": {
                 "0": {
-                    "pictureId": "0",
                     "coord": {
                         "x": 78.012,
                         "y": 45.976
                     }
                 },
                 "1": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 81.406,
                         "y": 46.217
                     }
                 },
                 "2": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 82.913,
                         "y": 50.963
                     }
                 },
                 "3": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 83.6,
                         "y": 49.8
                     }
                 },
                 "4": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 90.609,
                         "y": 45.445
                     }
                 },
                 "5": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 84.723,
                         "y": 38.226
                     }
                 },
                 "6": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 86.564,
                         "y": 43.907
                     }
                 },
                 "7": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 96.025,
                         "y": 46.656
                     }
                 },
                 "8": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 94.52,
                         "y": 39.477
@@ -889,63 +772,54 @@
             "drillNumber": "M14",
             "dots": {
                 "0": {
-                    "pictureId": "0",
                     "coord": {
                         "x": 80,
                         "y": 45.976
                     }
                 },
                 "1": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 82.811,
                         "y": 44.811
                     }
                 },
                 "2": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 87.622,
                         "y": 47.541
                     }
                 },
                 "3": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 90.6,
                         "y": 47.6
                     }
                 },
                 "4": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 90.609,
                         "y": 38.555
                     }
                 },
                 "5": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 81.18,
                         "y": 34.004
                     }
                 },
                 "6": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 86.564,
                         "y": 40.093
                     }
                 },
                 "7": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 96.025,
                         "y": 37.344
                     }
                 },
                 "8": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 87.984,
                         "y": 35.473
@@ -957,63 +831,54 @@
             "drillNumber": "M15",
             "dots": {
                 "0": {
-                    "pictureId": "0",
                     "coord": {
                         "x": 80,
                         "y": 43.326
                     }
                 },
                 "1": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 80.938,
                         "y": 42.938
                     }
                 },
                 "2": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 85.541,
                         "y": 49.622
                     }
                 },
                 "3": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 87.2,
                         "y": 49
                     }
                 },
                 "4": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 91.155,
                         "y": 42
                     }
                 },
                 "5": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 83.285,
                         "y": 35.834
                     }
                 },
                 "6": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 83.282,
                         "y": 40.093
                     }
                 },
                 "7": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 88.013,
                         "y": 37.344
                     }
                 },
                 "8": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 82.36,
                         "y": 37.736
@@ -1025,63 +890,54 @@
             "drillNumber": "M16",
             "dots": {
                 "0": {
-                    "pictureId": "0",
                     "coord": {
                         "x": 81.988,
                         "y": 45.976
                     }
                 },
                 "1": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 84.217,
                         "y": 43.406
                     }
                 },
                 "2": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 88.963,
                         "y": 44.913
                     }
                 },
                 "3": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 93.4,
                         "y": 45.3
                     }
                 },
                 "4": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 89.025,
                         "y": 35.444
                     }
                 },
                 "5": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 78.609,
                         "y": 32.911
                     }
                 },
                 "6": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 86.564,
                         "y": 36.279
                     }
                 },
                 "7": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 96.025,
                         "y": 28.033
                     }
                 },
                 "8": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 81.451,
                         "y": 31.471
@@ -1093,63 +949,54 @@
             "drillNumber": "M17",
             "dots": {
                 "0": {
-                    "pictureId": "0",
                     "coord": {
                         "x": 83.976,
                         "y": 45.976
                     }
                 },
                 "1": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 85.623,
                         "y": 42
                     }
                 },
                 "2": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 89.424,
                         "y": 42
                     }
                 },
                 "3": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 94.7,
                         "y": 42
                     }
                 },
                 "4": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 86.561,
                         "y": 32.98
                     }
                 },
                 "5": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 75.832,
                         "y": 32.668
                     }
                 },
                 "6": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 83.282,
                         "y": 36.279
                     }
                 },
                 "7": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 88.013,
                         "y": 28.033
                     }
                 },
                 "8": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 75.826,
                         "y": 33.734
@@ -1161,63 +1008,54 @@
             "drillNumber": "M18",
             "dots": {
                 "0": {
-                    "pictureId": "0",
                     "coord": {
                         "x": 81.988,
                         "y": 43.326
                     }
                 },
                 "1": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 82.343,
                         "y": 41.532
                     }
                 },
                 "2": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 88.963,
                         "y": 39.087
                     }
                 },
                 "3": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 93.4,
                         "y": 38.7
                     }
                 },
                 "4": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 83.45,
                         "y": 31.396
                     }
                 },
                 "5": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 73.112,
                         "y": 33.298
                     }
                 },
                 "6": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 80,
                         "y": 36.279
                     }
                 },
                 "7": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 80,
                         "y": 28.033
                     }
                 },
                 "8": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 70.199,
                         "y": 35.996
@@ -1229,63 +1067,54 @@
             "drillNumber": "M19",
             "dots": {
                 "0": {
-                    "pictureId": "0",
                     "coord": {
                         "x": 83.976,
                         "y": 43.326
                     }
                 },
                 "1": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 83.749,
                         "y": 40.126
                     }
                 },
                 "2": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 87.622,
                         "y": 36.459
                     }
                 },
                 "3": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 90.6,
                         "y": 36.4
                     }
                 },
                 "4": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 80.005,
                         "y": 30.85
                     }
                 },
                 "5": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 70.719,
                         "y": 34.734
                     }
                 },
                 "6": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 73.436,
                         "y": 36.279
                     }
                 },
                 "7": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 63.975,
                         "y": 28.033
                     }
                 },
                 "8": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 58.945,
                         "y": 40.521
@@ -1297,63 +1126,54 @@
             "drillNumber": "M20",
             "dots": {
                 "0": {
-                    "pictureId": "0",
                     "coord": {
                         "x": 83.976,
                         "y": 40.674
                     }
                 },
                 "1": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 81.874,
                         "y": 38.251
                     }
                 },
                 "2": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 85.541,
                         "y": 34.378
                     }
                 },
                 "3": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 87.2,
                         "y": 35
                     }
                 },
                 "4": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 76.56,
                         "y": 31.396
                     }
                 },
                 "5": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 75.994,
                         "y": 37.706
                     }
                 },
                 "6": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 76.718,
                         "y": 36.279
                     }
                 },
                 "7": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 71.987,
                         "y": 28.033
                     }
                 },
                 "8": {
-                    "pictureId": "1",
                     "coord": {
                         "x": 64.572,
                         "y": 38.259
