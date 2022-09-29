@@ -1,11 +1,11 @@
-import { projectDataStore } from "@/stores/DrillProject";
+import { usePdStore, useSelectionStore } from "@/stores/DrillProject";
 import type { MarcherSelection } from "@/stores/MarcherSelection";
 
 let selection: MarcherSelection;
 
 export function makeBlock(doPerfectSquare) {
 
-    if (!selection) selection = projectDataStore().selection;
+    if (!selection) selection = useSelectionStore().selection;
     if (selection.length < 4) return console.error(">= 4 marchers to make block");
     if (selection.length % 2 != 0) return console.error("need even number to make block");
 

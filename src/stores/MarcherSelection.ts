@@ -46,7 +46,7 @@ export class MarcherSelection {
             this.unselect(e);
         });
     }
-    center: Coord | ComputedRef<Coord> = computed<Coord>(() => {        
+    center: Coord | ComputedRef<Coord> = computed<Coord>(() => {
         let sumX = 0, sumY = 0;
         this.targets.items.forEach((t) => {
             sumX += t.component.storedCoord.x;
@@ -58,7 +58,7 @@ export class MarcherSelection {
         };
     });
 
-    centerCurrent : Coord | ComputedRef<Coord> = computed(() => {
+    centerCurrent: Coord | ComputedRef<Coord> = computed(() => {
         let sumX = 0, sumY = 0;
         this.targets.items.forEach((i) => {
             sumX += i.component.currentCoord.x;
@@ -82,10 +82,10 @@ export class MarcherSelectionItem {
         this.asComponent = asComponent;
     }
 
-    get component() {
+    component : any = computed(() => {
         if (!this.storedComponent) {
             this.storedComponent = this.asComponent(this.element);
         }
         return this.storedComponent;
-    }
+    });
 }

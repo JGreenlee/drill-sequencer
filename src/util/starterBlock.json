@@ -3,393 +3,395 @@
     "marchers": [
         {
             "drillNumber": "M1",
-            "dots": [
-                {
+            "dots": {
+                "0": {
                     "pictureId": "0",
                     "coord": {
-                        "x": 85.874,
-                        "y": 47.874
+                        "x": 83.976,
+                        "y": 38.024
                     }
                 },
-                {
+                "1": {
                     "pictureId": "1",
                     "coord": {
                         "x": 80,
-                        "y": 64
+                        "y": 36.377
                     }
                 }
-            ]
+            }
         },
         {
             "drillNumber": "M2",
-            "dots": [
-                {
+            "dots": {
+                "0": {
                     "pictureId": "0",
                     "coord": {
-                        "x": 81.958,
-                        "y": 47.874
+                        "x": 80,
+                        "y": 40.674
                     }
                 },
-                {
-                    "pictureId": "0",
+                "1": {
+                    "pictureId": "1",
                     "coord": {
-                        "x": 70,
-                        "y": 60
+                        "x": 79.062,
+                        "y": 41.062
                     }
                 }
-            ]
+            }
         },
         {
             "drillNumber": "M3",
-            "dots": [
-                {
+            "dots": {
+                "0": {
                     "pictureId": "0",
                     "coord": {
-                        "x": 78.042,
-                        "y": 42
+                        "x": 81.988,
+                        "y": 40.674
                     }
                 },
-                {
-                    "pictureId": "0",
+                "1": {
+                    "pictureId": "1",
                     "coord": {
-                        "x": 60,
-                        "y": 56
+                        "x": 80.468,
+                        "y": 39.657
                     }
                 }
-            ]
+            }
         },
         {
             "drillNumber": "M4",
-            "dots": [
-                {
+            "dots": {
+                "0": {
                     "pictureId": "0",
                     "coord": {
-                        "x": 81.958,
-                        "y": 39.063
+                        "x": 78.012,
+                        "y": 40.674
                     }
                 },
-                {
-                    "pictureId": "0",
+                "1": {
+                    "pictureId": "1",
                     "coord": {
-                        "x": 90,
-                        "y": 68
+                        "x": 77.657,
+                        "y": 42.468
                     }
                 }
-            ]
+            }
         },
         {
             "drillNumber": "M5",
-            "dots": [
-                {
+            "dots": {
+                "0": {
                     "pictureId": "0",
                     "coord": {
-                        "x": 74.126,
-                        "y": 36.126
+                        "x": 78.012,
+                        "y": 43.326
                     }
                 },
-                {
-                    "pictureId": "0",
+                "1": {
+                    "pictureId": "1",
                     "coord": {
-                        "x": 100,
-                        "y": 72
+                        "x": 79.532,
+                        "y": 44.343
                     }
                 }
-            ]
+            }
         },
         {
             "drillNumber": "M6",
-            "dots": [
-                {
+            "dots": {
+                "0": {
                     "pictureId": "0",
                     "coord": {
-                        "x": 81.958,
-                        "y": 36.126
+                        "x": 76.024,
+                        "y": 40.674
                     }
                 },
-                {
-                    "pictureId": "0",
+                "1": {
+                    "pictureId": "1",
                     "coord": {
-                        "x": 100,
-                        "y": 72
+                        "x": 76.251,
+                        "y": 43.874
                     }
                 }
-            ]
+            }
         },
         {
             "drillNumber": "M7",
-            "dots": [
-                {
+            "dots": {
+                "0": {
                     "pictureId": "0",
                     "coord": {
-                        "x": 74.126,
-                        "y": 42
+                        "x": 76.024,
+                        "y": 38.024
                     }
                 },
-                {
-                    "pictureId": "0",
+                "1": {
+                    "pictureId": "1",
                     "coord": {
-                        "x": 100,
-                        "y": 72
+                        "x": 74.377,
+                        "y": 42
                     }
                 }
-            ]
+            }
         },
         {
             "drillNumber": "M8",
-            "dots": [
-                {
+            "dots": {
+                "0": {
                     "pictureId": "0",
                     "coord": {
-                        "x": 74.126,
-                        "y": 39.063
+                        "x": 76.024,
+                        "y": 43.326
                     }
                 },
-                {
-                    "pictureId": "0",
+                "1": {
+                    "pictureId": "1",
                     "coord": {
-                        "x": 100,
-                        "y": 72
+                        "x": 78.126,
+                        "y": 45.749
                     }
                 }
-            ]
+            }
         },
         {
             "drillNumber": "M9",
-            "dots": [
-                {
+            "dots": {
+                "0": {
                     "pictureId": "0",
                     "coord": {
-                        "x": 78.042,
-                        "y": 36.126
+                        "x": 78.012,
+                        "y": 38.024
                     }
                 },
-                {
-                    "pictureId": "0",
+                "1": {
+                    "pictureId": "1",
                     "coord": {
-                        "x": 100,
-                        "y": 72
+                        "x": 75.783,
+                        "y": 40.594
                     }
                 }
-            ]
+            }
         },
         {
             "drillNumber": "M10",
-            "dots": [
-                {
+            "dots": {
+                "0": {
                     "pictureId": "0",
                     "coord": {
-                        "x": 78.042,
-                        "y": 39.063
+                        "x": 80,
+                        "y": 38.024
                     }
                 },
-                {
-                    "pictureId": "0",
+                "1": {
+                    "pictureId": "1",
                     "coord": {
-                        "x": 100,
-                        "y": 72
+                        "x": 77.189,
+                        "y": 39.189
                     }
                 }
-            ]
+            }
         },
         {
             "drillNumber": "M11",
-            "dots": [
-                {
+            "dots": {
+                "0": {
                     "pictureId": "0",
                     "coord": {
-                        "x": 78.042,
-                        "y": 44.937
+                        "x": 81.988,
+                        "y": 38.024
                     }
                 },
-                {
-                    "pictureId": "0",
+                "1": {
+                    "pictureId": "1",
                     "coord": {
-                        "x": 100,
-                        "y": 72
+                        "x": 78.594,
+                        "y": 37.783
                     }
                 }
-            ]
+            }
         },
         {
             "drillNumber": "M12",
-            "dots": [
-                {
+            "dots": {
+                "0": {
                     "pictureId": "0",
                     "coord": {
-                        "x": 74.126,
-                        "y": 47.874
+                        "x": 76.024,
+                        "y": 45.976
                     }
                 },
-                {
-                    "pictureId": "0",
+                "1": {
+                    "pictureId": "1",
                     "coord": {
-                        "x": 100,
-                        "y": 72
+                        "x": 80,
+                        "y": 47.623
                     }
                 }
-            ]
+            }
         },
         {
             "drillNumber": "M13",
-            "dots": [
-                {
+            "dots": {
+                "0": {
                     "pictureId": "0",
                     "coord": {
-                        "x": 81.958,
-                        "y": 44.937
+                        "x": 78.012,
+                        "y": 45.976
                     }
                 },
-                {
-                    "pictureId": "0",
+                "1": {
+                    "pictureId": "1",
                     "coord": {
-                        "x": 100,
-                        "y": 72
+                        "x": 81.406,
+                        "y": 46.217
                     }
                 }
-            ]
+            }
         },
         {
             "drillNumber": "M14",
-            "dots": [
-                {
+            "dots": {
+                "0": {
                     "pictureId": "0",
                     "coord": {
-                        "x": 78.042,
-                        "y": 47.874
+                        "x": 80,
+                        "y": 45.976
                     }
                 },
-                {
-                    "pictureId": "0",
+                "1": {
+                    "pictureId": "1",
                     "coord": {
-                        "x": 100,
-                        "y": 72
+                        "x": 82.811,
+                        "y": 44.811
                     }
                 }
-            ]
+            }
         },
         {
             "drillNumber": "M15",
-            "dots": [
-                {
+            "dots": {
+                "0": {
                     "pictureId": "0",
                     "coord": {
-                        "x": 81.958,
-                        "y": 42
+                        "x": 80,
+                        "y": 43.326
                     }
                 },
-                {
-                    "pictureId": "0",
+                "1": {
+                    "pictureId": "1",
                     "coord": {
-                        "x": 100,
-                        "y": 72
+                        "x": 80.938,
+                        "y": 42.938
                     }
                 }
-            ]
+            }
         },
         {
             "drillNumber": "M16",
-            "dots": [
-                {
+            "dots": {
+                "0": {
                     "pictureId": "0",
                     "coord": {
-                        "x": 85.874,
-                        "y": 36.126
+                        "x": 81.988,
+                        "y": 45.976
                     }
                 },
-                {
-                    "pictureId": "0",
+                "1": {
+                    "pictureId": "1",
                     "coord": {
-                        "x": 100,
-                        "y": 72
+                        "x": 84.217,
+                        "y": 43.406
                     }
                 }
-            ]
+            }
         },
         {
             "drillNumber": "M17",
-            "dots": [
-                {
+            "dots": {
+                "0": {
                     "pictureId": "0",
                     "coord": {
-                        "x": 85.874,
-                        "y": 44.937
+                        "x": 83.976,
+                        "y": 45.976
                     }
                 },
-                {
-                    "pictureId": "0",
+                "1": {
+                    "pictureId": "1",
                     "coord": {
-                        "x": 100,
-                        "y": 72
+                        "x": 85.623,
+                        "y": 42
                     }
                 }
-            ]
+            }
         },
         {
             "drillNumber": "M18",
-            "dots": [
-                {
+            "dots": {
+                "0": {
                     "pictureId": "0",
                     "coord": {
-                        "x": 85.874,
-                        "y": 42
+                        "x": 81.988,
+                        "y": 43.326
                     }
                 },
-                {
-                    "pictureId": "0",
+                "1": {
+                    "pictureId": "1",
                     "coord": {
-                        "x": 100,
-                        "y": 72
+                        "x": 82.343,
+                        "y": 41.532
                     }
                 }
-            ]
+            }
         },
         {
             "drillNumber": "M19",
-            "dots": [
-                {
+            "dots": {
+                "0": {
                     "pictureId": "0",
                     "coord": {
-                        "x": 74.126,
-                        "y": 44.937
+                        "x": 83.976,
+                        "y": 43.326
                     }
                 },
-                {
-                    "pictureId": "0",
+                "1": {
+                    "pictureId": "1",
                     "coord": {
-                        "x": 100,
-                        "y": 72
+                        "x": 83.749,
+                        "y": 40.126
                     }
                 }
-            ]
+            }
         },
         {
             "drillNumber": "M20",
-            "dots": [
-                {
+            "dots": {
+                "0": {
                     "pictureId": "0",
                     "coord": {
-                        "x": 85.874,
-                        "y": 39.063
+                        "x": 83.976,
+                        "y": 40.674
                     }
                 },
-                {
-                    "pictureId": "0",
+                "1": {
+                    "pictureId": "1",
                     "coord": {
-                        "x": 100,
-                        "y": 72
+                        "x": 81.874,
+                        "y": 38.251
                     }
                 }
-            ]
+            }
         }
     ],
     "musicFile": "",
     "pictures": [
         {
             "pictureId": "0",
+            "timestamp": 0,
             "countsToNext": 8
         },
         {
             "pictureId": "1",
+            "timestamp": 3.5,
             "countsToNext": 0
         }
     ],

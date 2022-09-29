@@ -33,9 +33,7 @@ export class GenericForm extends Form {
     }
 
     update(displayOnly?) {
-        const center = this.selection.centerCurrent as Coord;
-        console.log('currentcenter', center);
-        
+        const center = this.selection.centerCurrent as Coord;        
         this.selection.targets.items.forEach(i => {
             const marcher = i.component;
             const relativeDot = this.relativeDots[marcher.drillNumber];

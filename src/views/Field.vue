@@ -1,175 +1,73 @@
 
 <template>
-  <main @click="debug()">
-    <div class="wrapper">
-
-      <KeyEvents
-        @keyup.space="debug()"
-        @keyup.ctrl.z="proj.undo()"
-        @keyup.ctrl.y="proj.redo()"
-        @keyup.o="(proj.form as any) = new CircleForm(proj.selection)"
-        @keyup.b="makeBlock(true)"
-        @keyup.+="proj.formOrGeneric.scale(1.25, 1.25)"
-        @keyup.-="proj.formOrGeneric.scale(.8, .8)"
-        @keyup.a="selectAll"
-        @keyup.[="proj.formOrGeneric.rotate(-8)"
-        @keyup.]="proj.formOrGeneric.rotate(8)"
-        @keyup.up="proj.formOrGeneric.move(0, 2)"
-        @keyup.right="proj.formOrGeneric.move(2, 0)"
-        @keyup.down="proj.formOrGeneric.move(0, -2)"
-        @keyup.left="proj.formOrGeneric.move(-2, 0)"
-        @keyup.esc.stop="escape"
-        @keyup.enter.stop="proj.form?.apply()" />
-      <div class="field" ref="field" :class="{perspective: isPerspective}">
-        <div class="side side1">
-          <div v-for="n in 10" v-bind:num-labels="10">
-            <span class="yardline-numbers">{{n%2==0 || !isPerspective ? n*5 : '' }}</span>
-            <span class="yardline-numbers">{{n%2==0 || !isPerspective ? n*5 : '' }}</span>
-            <span class="hash"></span>
-            <span class="hash"></span>
-          </div>
+  <div>
+    <div class="field" ref="field" :class="{perspective: isPerspective}">
+      <div class="side side1">
+        <div v-for="n in 10" v-bind:num-labels="10">
+          <span class="yardline-numbers">{{n%2==0 || !isPerspective ? n*5 : '' }}</span>
+          <span class="yardline-numbers">{{n%2==0 || !isPerspective ? n*5 : '' }}</span>
+          <span class="hash"></span>
+          <span class="hash"></span>
         </div>
-        <div class="side side2">
-          <div v-for="n in 10" v-bind:num-labels="10">
-            <span class="yardline-numbers">{{n%2==0 || !isPerspective ? 50 - n*5 || '' : '' }}</span>
-            <span class="yardline-numbers">{{n%2==0 || !isPerspective ? 50 - n*5 || '' : '' }}</span>
-            <span class="hash"></span>
-            <span class="hash"></span>
-          </div>
+      </div>
+      <div class="side side2">
+        <div v-for="n in 10" v-bind:num-labels="10">
+          <span class="yardline-numbers">{{n%2==0 || !isPerspective ? 50 - n*5 || '' : '' }}</span>
+          <span class="yardline-numbers">{{n%2==0 || !isPerspective ? 50 - n*5 || '' : '' }}</span>
+          <span class="hash"></span>
+          <span class="hash"></span>
         </div>
-        <div class="tpl grid"></div>
-        <Marchers ref="marchers"></Marchers>
       </div>
+      <div class="tpl grid"></div>
+      <Marchers ref="marchers"></Marchers>
     </div>
-    <button class="toggle-perspective" @click="isPerspective=!isPerspective;">perspective</button>
-    <Selecto ref="selecto" :dragCondition="e => e.inputEvent.target.classList.contains('marchers')"
-      dragContainer=".marchers" v-bind:selectableTargets='[".marchers .selectable"]' v-bind:hitRate='0'
-      v-bind:selectByClick='true' v-bind:selectFromInside='false' v-bind:toggleContinueSelect='["shift"]'
-      v-bind:ratio='0' @select="onSelect">
-    </Selecto>
-    <div v-if='proj.selection.length > 0' class="sel-hover info">
-      <div>
-        {{ '[selection of ' + proj.selection.length + ']' }}
-        <br />
-        {{ util.fieldX(proj.selection.center.x)}}
-        <br />
-        {{ util.fieldY(proj.selection.center.y)}}
-        <br />
-        {{ proj.selection.targets.items.map(i => i?.element?.getAttribute('drillNumber')).join(', ')}}
-      </div>
-    </div>
-    <div v-else-if='proj.hoveredEl' class="sel-hover info">
-      <div>
-        {{proj.hoveredEl?.getAttribute('drillNumber') }}
-        <br />
-        {{ util.fieldX(proj.hoveredEl?.getAttribute('x'))}}
-        <br />
-        {{ util.fieldY(proj.hoveredEl?.getAttribute('y'))}}
-      </div>
-    </div>
-    <div class="pending info" v-if="proj.form">
-      <div>
-        {{ proj.form.applied ? 'changes saved ✅' : 'changes pending...' }}
-      </div>
-      <div v-if="!proj.form.applied" class="pending-options">
-        <div v-for="(v,k) in proj.form.args" class="pendingform">
-          <p>{{v.name}}</p>
-          <input :type="v.type" step="any" :placeholder="v+''" :value="util.roundUi(proj.form[k])"
-            @keyup.stop="(e:any) => {proj.form?.update(); e.target.setAttribute('step', '0.1')}"
-            @input="(e:any) => {proj.form![k] = +(e.target[v.bindAttr||'value']); proj.form?.update();}">
-        </div>
-        <button @click="proj.form?.apply()">APPLY</button>
-        <button @click=" proj.form?.cancel(); proj.form=null">CANCEL</button>
-      </div>
-    </div>
-  </main>
+  </div>
+  <button class="toggle-perspective" @click="togglePerspective">perspective</button>
+  <Selecto ref="selecto" :dragCondition="e => e.inputEvent.target.classList.contains('marchers')"
+    dragContainer=".marchers" v-bind:selectableTargets='[".marchers .selectable"]' v-bind:hitRate='0'
+    v-bind:selectByClick='true' v-bind:selectFromInside='false' v-bind:toggleContinueSelect='["shift"]'
+    v-bind:ratio='0' @select="onSelect">
+  </Selecto>
+  <SelectionInfo />
+  <PendingInfo />
 </template>
 <script setup lang="ts">
 
-import KeyEvents from '../components/keyevents.vue'
 import Marchers from '../components/Marchers.vue'
-import { projectDataStore } from '@/stores/DrillProject';
+import { useSelectionStore } from '../stores/DrillProject';
 import { onMounted, ref, type Ref } from 'vue';
 import Selecto from 'vue3-selecto';
-import { makeBlock } from '../util/formOperations';
 
-import * as util from '../util/util';
-import { CircleForm } from '@/forms/CircleForm';
+import SelectionInfo from '../components/SelectionInfo.vue';
+import PendingInfo from '../components/PendingInfo.vue';
 
-const proj = projectDataStore();
-const marchers = ref<any>(null);
+const selStore = useSelectionStore();
 let isPerspective: Ref<boolean> = ref(false);
 const field = ref<HTMLDivElement>();
-
-function resizeField() {
-  if (!field.value) return;
-  const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-  const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-  let fieldWidth: string;
-  if (vh < vw / 2) {
-    fieldWidth = vh * 1.95 / vw * 100 + 'vw';
-    field.value.style.setProperty('--field-width', fieldWidth);
-  } else {
-    fieldWidth = '95vw';
-  }
-  field.value.style.setProperty('--field-width', fieldWidth);
-}
-
-// for debugging
-function debug() {
-  console.log(proj.form);
-}
-
-onMounted(() => {
-  resizeField();
-  ['resize', 'fullscreenchange'].forEach(ev =>
-    setTimeout(() => window.addEventListener(ev, resizeField)), 300);
-});
+const marchers = ref<HTMLDivElement>();
 
 function onSelect(selectoEvent) {
-  proj.selection.add(selectoEvent.added.map(s => s.parentElement));
-  proj.selection.remove(selectoEvent.removed.map(s => s.parentElement));
+  selStore.selection.add(selectoEvent.added.map(s => s.parentElement));
+  selStore.selection.remove(selectoEvent.removed.map(s => s.parentElement));
 }
 
-function selectAll() {
-  field.value?.querySelectorAll('.marcher').forEach(e => {
-    proj.selection.select(e);
-  });
+function togglePerspective() {
+  isPerspective.value = !isPerspective.value;
 }
 
-function escape() {
-  if (proj.form) {
-    proj.form.cancel(); proj.form = null;
-  } else {
-    proj.reset(true, true, true);
-  }
-}
+defineExpose({
+  field,
+  marchers,
+  togglePerspective
+})
 
 </script>
 
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css?family=Barlow+Condensed:700');
 
-main {
-  height: 100%;
-  overflow: hidden;
-}
-
-.wrapper {
-  height: 100%;
-  perspective: 100vw;
-  display: flex;
-  user-select: none;
-
-  &:has(.field.perspective) * {
-    transform-style: preserve-3d;
-  }
-}
-
 .field {
   --field-width: 95vw;
-  --hue-editor: 240;
-  --hue-selection: 280;
   --dark-turf-green: hsl(var(--hue-editor) 3% 95% / 1);
   --light-turf-green: hsl(var(--hue-editor) 3% 100% / 1);
   --yardlines-white: hsl(var(--hue-editor) 5% 50% / 1);
@@ -224,7 +122,6 @@ main {
     background-size: 20%;
   }
 }
-
 
 .field .side {
   width: 50%;
@@ -356,16 +253,6 @@ main {
   opacity: 0;
 }
 
-.marchers {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 999;
-  user-select: none;
-}
-
 .toggle-perspective {
   position: fixed;
   right: .5rem;
@@ -385,74 +272,5 @@ main {
   position: absolute;
   background-color: rgb(0 0 0 / 80%);
   user-select: none;
-}
-
-.sel-hover {
-  max-width: 10vw;
-  right: 0;
-  bottom: 0;
-  border-radius: 1vw 0 0 0;
-}
-
-.sel-hover:hover {
-  & div {
-    display: none;
-  }
-}
-
-.pending {
-  left: 0;
-  top: 0;
-
-  & input {
-    min-width: 100%;
-    max-width: 3rem;
-
-    &[type="checkbox"] {
-      min-width: unset;
-    }
-  }
-
-  & .pending-options {
-    display: grid;
-    gap: .12rem;
-    grid-template-columns: 1fr 1fr;
-    max-width: 8rem;
-  }
-
-  & .pending-arg {
-    display: inline-block;
-  }
-
-  & .pending-arg.newline {
-    display: block;
-  }
-}
-
-.handle {
-  background: none;
-  height: 0px;
-  position: absolute;
-  width: 0px;
-
-  &.nw {
-    left: 0;
-    top: 0;
-  }
-
-  &.ne {
-    right: 0;
-    top: 0;
-  }
-
-  &.se {
-    right: 0;
-    bottom: 0;
-  }
-
-  &.sw {
-    left: 0;
-    bottom: 0;
-  }
 }
 </style>

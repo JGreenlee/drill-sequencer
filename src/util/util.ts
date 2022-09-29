@@ -9,6 +9,11 @@ export const roundUi = (n) =>
 export const roundCalc = (n) =>
     Math.round(n * DOT_PRECISION_CALC) / DOT_PRECISION_CALC;
 
+export function resetAnimation(target) {
+    target.style.animation = 'none';
+    target.offsetHeight;
+    target.style.animation = null;
+}
 
 export function fieldX(x, abbr?) {
     // x = x * 1;

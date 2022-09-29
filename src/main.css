@@ -1,6 +1,8 @@
 :root {
   --color-background: #1a1a1a;
   --color-text: #eee;
+  --hue-editor: 240;
+  --hue-selection: 280;
 }
 
 *,

@@ -1,9 +1,13 @@
 <template>
-  <div ref="marcherEl" :class="{marcher: true, selected: isSelected}" draggable="true" :drillNumber="drillNumber"
-    :storedX="storedCoord.x" :storedY="storedCoord.y" :x="util.roundCalc(currentCoord.x)"
-    :y="util.roundCalc(currentCoord.y)" :storedBearing="coordFromSel.bearing"
+  <div ref="marcherEl" draggable="true" :drillNumber="drillNumber" :class="{marcher: true, selected: isSelected}"
+    :storedX="storedCoord.x" :storedY="storedCoord.y"
+    :x="util.roundCalc(currentCoord.x)" :nextX="nextCoord?.x"
+    :y="util.roundCalc(currentCoord.y)" :nextY="nextCoord?.y"
+    :storedBearing="coordFromSel.bearing"
     :style="{left: util.roundUi(currentCoord.x) / 1.6 + '%', top: (84 - util.roundUi(currentCoord.y)) / 0.84 + '%'}"
-    @click.exact="$emit('tap', '', drillNumber)" @click.shift="$emit('tap', 'shift', drillNumber)">
+    @click.exact="$emit('tap', '', drillNumber)"
+    @click.shift="$emit('tap', 'shift', drillNumber)"
+    @animationend="e => util.resetAnimation(e.target)">
     <div ref="selectable" class="selectable">
     </div>
     <img src="../assets/bksprite.svg" draggable="false" />
@@ -14,44 +18,47 @@
 
 <script setup lang="ts">
 
-import { projectDataStore } from '@/stores/DrillProject';
+import { usePdStore, useSelectionStore } from '@/stores/DrillProject';
 import type { Coord } from '../stores/ProjectTypes';
-import { onMounted, reactive, ref, type Ref } from 'vue';
+import { onMounted, reactive, ref, watch, type Ref } from 'vue';
 import { computed } from '@vue/reactivity';
 
 import * as util from '../util/util';
-
-// @Component({
-//   emits: ['tap']
-// })
-// export default class Marcher extends Vue {
 
 let isMounted = ref(false);
 const marcherEl: Ref<HTMLDivElement | null> = ref(null);
 const selectable: Ref<HTMLDivElement | null> = ref(null);
 const props = defineProps(['x', 'y', 'drillNumber']);
 
-let proj = projectDataStore();
+let proj = usePdStore();
+const selStore = useSelectionStore();
 
 const currentCoord: Coord = reactive({
-  // range: side1 to side2 | 0 - 160
   x: 80,
-  // range: back to front | 0 - 84
   y: 56
 });
 const x = computed(() => currentCoord.x);
 const y = computed(() => currentCoord.y);
 
+const nextCoord = computed(() => {
+  const nextC = proj.getMarcherDot(props.drillNumber, proj.currentPictureId, 1);
+  if (nextC) {
+    marcherEl.value?.style.setProperty('--nextLeft', util.roundUi(nextC.x) / 1.6 + '%');
+    marcherEl.value?.style.setProperty('--nextTop', (84 - util.roundUi(nextC.y)) / 0.84 + '%');
+  }
+  return nextC;
+});
+
 const coordFromSel = reactive({
-  x: computed(() => currentCoord.x - proj.selection.center.x),
-  y: computed(() => currentCoord.y - proj.selection.center.y),
-  bearing: computed(() => util.calcBearing(proj.selection.center.x, proj.selection.center.y, storedCoord.value.x, storedCoord.value.y))
+  x: computed(() => currentCoord.x - selStore.selection.center.x),
+  y: computed(() => currentCoord.y - selStore.selection.center.y),
+  bearing: computed(() => util.calcBearing(selStore.selection.center.x, selStore.selection.center.y, storedCoord.value.x, storedCoord.value.y))
 });
 
 const isSelected = computed(() => {
   if (!isMounted.value) return;
   if (!marcherEl.value) return console.error('marcherEl is null for marcher ', props.drillNumber);
-  return proj.selection.includes(marcherEl.value!);
+  return selStore.selection.includes(marcherEl.value!);
 });
 
 onMounted(() => {
@@ -60,7 +67,13 @@ onMounted(() => {
   isMounted.value = true;
 });
 
-const storedCoord = computed(() => proj.getMarcherDot(props.drillNumber, proj.currentPictureId)?.coord || { x: 999, y: 999 });
+const storedCoord = computed(() => {
+  const c = proj.getMarcherDot(props.drillNumber, proj.currentPictureId) || { x: 999, y: -999 }
+  setCurrentCoord(c.x, c.y);
+  marcherEl.value?.style.setProperty('--storedLeft', util.roundUi(c.x) / 1.6 + '%');
+  marcherEl.value?.style.setProperty('--storedTop', (84 - util.roundUi(c.y)) / 0.84 + '%');
+  return (c);
+});
 
 function setDisplayCoord(newX, newY) {
   marcherEl.value!.style.left = newX / 1.6 + '%';
@@ -68,10 +81,8 @@ function setDisplayCoord(newX, newY) {
 }
 
 function setCurrentCoord(newX, newY) {
-  console.time('setc')
   currentCoord.x = util.roundCalc(util.clamp(newX, 0, 160));
   currentCoord.y = util.roundCalc(util.clamp(newY, 0, 84));
-  console.timeEnd('setc');
 }
 
 function setStoredCoord(newX, newY) {
