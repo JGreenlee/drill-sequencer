@@ -10,7 +10,6 @@ export type MarcherData = {
     drillNumber: string,
     dots: {
         [pictureId: string]: {
-            pictureId: string,
             coord: Coord
         }
     }
