@@ -12,15 +12,15 @@ let stack;
 const excludeKeys = ['selection'];
 
 export function initStack() {
-  stack = createStack(util.exclusiveStringify(getState(),excludeKeys));
+  stack = createStack(util.exclusiveStringify(getState(), excludeKeys));
 }
 
 function createStack(current: string) {
-  const stack = [current];  
+  const stack = [current];
   let index = 0;
   function update() {
     current = stack[index]
-    return JSON.parse('{'+current+'}')
+    return JSON.parse('{' + current + '}')
   }
   return {
     push: (value: string) => {
@@ -43,13 +43,18 @@ function createStack(current: string) {
   }
 }
 
-function getState() {  
+function getState() {
   return usePdStore().$state;
 }
 
 function patch(p) {
   const store = usePdStore();
   store.$patch(p);
+  console.log(p);
+
+  if (p.form) {
+    setTimeout(() => store.form?.recalculate())
+  }
 }
 
 export const usePdStore = defineStore('projectData', () => {
@@ -166,7 +171,7 @@ export const usePdStore = defineStore('projectData', () => {
       newPictureId = Number(currentPictureId.value) + 1;
     }
     pd.value.pictures.push({
-      pictureId: newPictureId+'',
+      pictureId: newPictureId + '',
       countsToNext: 8
     })
   }
@@ -221,7 +226,7 @@ export const usePdStore = defineStore('projectData', () => {
     patch(redo);
   }
   const pushChange = () => {
-    const clone = util.exclusiveStringify(getState(),excludeKeys);
+    const clone = util.exclusiveStringify(getState(), excludeKeys);
     stack.push(clone);
   }
 
