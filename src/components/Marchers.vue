@@ -9,7 +9,7 @@
         <Marcher v-for="marcher in proj.getMarchers()" :drillNumber="marcher.drillNumber" @tap="onMarcherTap"
             @mouseover="e => selStore.hoveredEl = e.target.closest('.marcher')"
             @mouseout="e => selStore.hoveredEl == e.target.closest('.marcher') ? selStore.hoveredEl = undefined : ''"
-            :ref="'marcherRefs'" />
+            :ref="pushMarcherRef" />
         <div class="handle nw"></div>
         <div class="handle ne"></div>
         <div class="handle se"></div>
@@ -37,6 +37,10 @@ onMounted(() => {
         marchersEl.value?.classList.remove('no-transition')
     }, 100);
 });
+
+function pushMarcherRef(r) {
+    marcherRefs.value.push(r);
+}
 
 function fieldCoords(e, round) {
 
