@@ -18,8 +18,8 @@ export class CircleForm extends Form {
         evenEllipse: { name: '⚠️ Even ellipse:', type: 'checkbox', bindAttr: 'checked' },
     });
 
-    constructor(selection) {
-        super(selection);
+    constructor() {
+        super();
         if (this.selection.length < 3) console.error(">=3 marchers to make oval");
         this.update();
     }
@@ -30,7 +30,7 @@ export class CircleForm extends Form {
         this.update();
     }
 
-    update(displayOnly?) {
+    recalculate(displayOnly?) {
         if (this.sizeX > 0) {
             this.sizeY ||= this.sizeX;
         } else {

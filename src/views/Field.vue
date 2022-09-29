@@ -1,6 +1,6 @@
 
 <template>
-  <div>
+  <div class="field-wrapper">
     <div class="field" ref="field" :class="{perspective: isPerspective}">
       <div class="side side1">
         <div v-for="n in 10" v-bind:num-labels="10">
@@ -28,27 +28,23 @@
     v-bind:selectByClick='true' v-bind:selectFromInside='false' v-bind:toggleContinueSelect='["shift"]'
     v-bind:ratio='0' @select="onSelect">
   </Selecto>
-  <SelectionInfo />
-  <PendingInfo />
 </template>
 <script setup lang="ts">
 
 import Marchers from '../components/Marchers.vue'
-import { useSelectionStore } from '../stores/DrillProject';
-import { onMounted, ref, type Ref } from 'vue';
+import { ref, type Ref } from 'vue';
 import Selecto from 'vue3-selecto';
 
-import SelectionInfo from '../components/SelectionInfo.vue';
-import PendingInfo from '../components/PendingInfo.vue';
+import { useTempStore } from '@/stores/DrillProject';
 
-const selStore = useSelectionStore();
+const tempStore = useTempStore();
 let isPerspective: Ref<boolean> = ref(false);
 const field = ref<HTMLDivElement>();
 const marchers = ref<HTMLDivElement>();
 
 function onSelect(selectoEvent) {
-  selStore.selection.add(selectoEvent.added.map(s => s.parentElement));
-  selStore.selection.remove(selectoEvent.removed.map(s => s.parentElement));
+  tempStore.selection.add(selectoEvent.added.map(s => s.parentElement));
+  tempStore.selection.remove(selectoEvent.removed.map(s => s.parentElement));
 }
 
 function togglePerspective() {
@@ -65,6 +61,15 @@ defineExpose({
 
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css?family=Barlow+Condensed:700');
+
+.field-wrapper {
+  perspective: 100vw;
+  user-select: none;
+
+  &:has(.field.perspective) * {
+    transform-style: preserve-3d;
+  }
+}
 
 .field {
   --field-width: 95vw;
@@ -86,7 +91,6 @@ defineExpose({
   position: relative;
   margin: auto;
   transform: rotateX(0) scale(1) translateY(0);
-  transition-property: v;
   transition: transform .5s;
 
   &.perspective {

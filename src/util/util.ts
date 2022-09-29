@@ -129,8 +129,8 @@ const toDegrees = (rad) =>
 export function rotate(p, deg, o?) {
     const a = -toRadians(deg);
     return {
-        x: Math.cos(a) * (p.x - (o?.x || 0)) - Math.sin(a) * (p.y - (o?.y||0)) + (o?.x||0),
-        y: Math.sin(a) * (p.x - (o?.x || 0)) + Math.cos(a) * (p.y - (o?.y||0)) + (o?.y||0)
+        x: Math.cos(a) * (p.x - (o?.x || 0)) - Math.sin(a) * (p.y - (o?.y || 0)) + (o?.x || 0),
+        y: Math.sin(a) * (p.x - (o?.x || 0)) + Math.cos(a) * (p.y - (o?.y || 0)) + (o?.y || 0)
     }
 }
 
@@ -163,8 +163,8 @@ export function getPointsAlongEllipse(major, minor, numPoints, offsetDeg?): Coor
         if (subIntegral >= nextPoint) {
             const d = toDegrees(theta);
             evenPoints.push({
-                x: roundUi(major * cosDeg(d + (offsetDeg||0) )),
-                y: roundUi(minor * -sinDeg(d + (offsetDeg||0) ))
+                x: roundUi(major * cosDeg(d + (offsetDeg || 0))),
+                y: roundUi(minor * -sinDeg(d + (offsetDeg || 0)))
             });
             nextPoint++;
         }
@@ -179,4 +179,53 @@ function computeDpt(r1, r2, theta) {
     const dpt_cos = Math.pow(r2 * Math.cos(theta), 2.0);
     dp = Math.sqrt(dpt_sin + dpt_cos);
     return dp;
+}
+
+export function exclusiveStringify(obj, excludedKeys, inArray?) {
+    let res = '';
+    for (const k in obj) {
+        if (!excludedKeys.includes(k)) {
+            if (!inArray)
+                res += "\"" + k + "\"" + ':'
+            if (Array.isArray(obj[k])) {
+                res += '['
+                res += exclusiveStringify(obj[k], excludedKeys, true);
+                res += '],'
+            } else {
+
+                if (typeof obj[k] == 'object' && obj[k] != null) {
+                    res += '{'
+                    res += exclusiveStringify(obj[k], excludedKeys);
+                    res += '},'
+                } else {
+                    if (obj[k] == undefined) {
+                        res += '0,'
+                    } else {
+                        res += JSON.stringify(obj[k]) + ','
+                    }
+                }
+            }
+        }
+    }
+    if (res.charAt(res.length - 1) == ',')
+        res = res.slice(0, -1);
+    return res;
+}
+
+const data = {
+    no: 72,
+    yes: {
+        no: {
+            yes: 92,
+            no: 6000
+        },
+        yes: [0, 0, 0, { yes: 0 }],
+        maybe: 90,
+        foo: { bar: 0 },
+        y: 80
+    },
+    maybe: {
+        yes: 9000,
+        no: 4
+    }
 }

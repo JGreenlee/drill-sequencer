@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 
-import { usePdStore, useSelectionStore } from '@/stores/DrillProject';
+import { usePdStore, useTempStore } from '@/stores/DrillProject';
 import type { Coord } from '../stores/ProjectTypes';
 import { onMounted, reactive, ref, watch, type Ref } from 'vue';
 import { computed } from '@vue/reactivity';
@@ -31,7 +31,7 @@ const selectable: Ref<HTMLDivElement | null> = ref(null);
 const props = defineProps(['x', 'y', 'drillNumber']);
 
 let proj = usePdStore();
-const selStore = useSelectionStore();
+const tempStore = useTempStore();
 
 const currentCoord: Coord = reactive({
   x: 80,
@@ -50,15 +50,15 @@ const nextCoord = computed(() => {
 });
 
 const coordFromSel = reactive({
-  x: computed(() => currentCoord.x - selStore.selection.center.x),
-  y: computed(() => currentCoord.y - selStore.selection.center.y),
-  bearing: computed(() => util.calcBearing(selStore.selection.center.x, selStore.selection.center.y, storedCoord.value.x, storedCoord.value.y))
+  x: computed(() => currentCoord.x - tempStore.selection.center.x),
+  y: computed(() => currentCoord.y - tempStore.selection.center.y),
+  bearing: computed(() => util.calcBearing(tempStore.selection.center.x, tempStore.selection.center.y, storedCoord.value.x, storedCoord.value.y))
 });
 
 const isSelected = computed(() => {
   if (!isMounted.value) return;
   if (!marcherEl.value) return console.error('marcherEl is null for marcher ', props.drillNumber);
-  return selStore.selection.includes(marcherEl.value!);
+  return tempStore.selection.includes(marcherEl.value!);
 });
 
 onMounted(() => {

@@ -1,3 +1,4 @@
+import { useTempStore } from "@/stores/DrillProject";
 import type { Coord } from "@/stores/ProjectTypes";
 import { reactive } from "vue";
 
@@ -16,8 +17,8 @@ export class GenericForm extends Form {
 
     relativeDots = {};
 
-    constructor(selection) {
-        super(selection);
+    constructor() {
+        super();
         this.storeRelativeDots();
         this.update();
     }
@@ -32,16 +33,14 @@ export class GenericForm extends Form {
         });
     }
 
-    update(displayOnly?) {
-        const center = this.selection.centerCurrent as Coord;        
+    recalculate(displayOnly?) {
+        const center = this.selection.centerCurrent as Coord;
         this.selection.targets.items.forEach(i => {
             const marcher = i.component;
             const relativeDot = this.relativeDots[marcher.drillNumber];
             if (relativeDot) {
-
                 let newX;
                 let newY;
-
                 // apply rotation
                 if (this.rotation) {
                     const rotated = util.rotate(relativeDot, this.rotation);

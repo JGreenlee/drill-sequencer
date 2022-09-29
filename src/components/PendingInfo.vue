@@ -1,27 +1,27 @@
 <template>
-    <div class="pending info" v-if="fStore.form">
+    <div class="pending info" v-if="proj.form">
         <div>
-            {{ fStore.form.applied ? 'changes saved ✅' : 'changes pending...' }}
+            {{ proj.form.applied ? 'changes saved ✅' : 'changes pending...' }}
         </div>
-        <div v-if="!fStore.form.applied" class="pending-options">
-            <div v-for="(v,k) in fStore.form.args" class="pendingform">
+        <div v-if="!proj.form.applied" class="pending-options">
+            <div v-for="(v,k) in proj.form.args" class="pendingform">
                 <p>{{v.name}}</p>
-                <input :type="v.type" step="1" :placeholder="v+''" :value="util.roundCalc(fStore.form[k])"
+                <input :type="v.type" step="1" :placeholder="v+''" :value="util.roundCalc(proj.form[k])"
                     @keyup.up.stop @keyup.down.stop
-                    @keyup="(e:any) => {fStore.form?.update()}"
-                    @input="(e:any) => {fStore.form![k] = +(e.target[v.bindAttr||'value']); fStore.form?.update();}">
+                    @keyup="(e:any) => {proj.form?.update()}"
+                    @input="(e:any) => {proj.form![k] = +(e.target[v.bindAttr||'value']); proj.form?.update();}">
             </div>
-            <button @click="fStore.form?.apply()">APPLY</button>
-            <button @click=" fStore.form?.cancel(); fStore.form=null">CANCEL</button>
+            <button @click="proj.form?.apply()">APPLY</button>
+            <button @click=" proj.form?.cancel(); proj.form=null">CANCEL</button>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { useFormStore } from '@/stores/DrillProject';
+import { usePdStore } from '@/stores/DrillProject';
 import * as util from '../util/util'
 
-const fStore = useFormStore();
+const proj = usePdStore();
 
 </script>
 

@@ -5,7 +5,7 @@
         @dragstart.shift="onDragStart($event,true)"
         @drag="onDrag" @dragend="onDragEnd"
         @dragenter="dropAllowed" @dragover="dropAllowed"
-        @mousedown.self.exact="if (fStore.form) fStore.form.apply(); selStore.selection.unselect()">
+        @mousedown.self.exact="if (proj.form) proj.form.apply(); selStore.selection.unselect()">
         <Marcher v-for="marcher in proj.getMarchers()" :drillNumber="marcher.drillNumber" @tap="onMarcherTap"
             @mouseover="e => selStore.hoveredEl = e.target.closest('.marcher')"
             @mouseout="e => selStore.hoveredEl == e.target.closest('.marcher') ? selStore.hoveredEl = undefined : ''"
@@ -19,17 +19,17 @@
 
 <script setup lang="ts">
 
-import { useFormStore, usePdStore, useSelectionStore } from '@/stores/DrillProject';
+import { usePdStore, useTempStore } from '@/stores/DrillProject';
 import type { Coord } from '@/stores/ProjectTypes';
 import { onMounted, ref, type Ref } from 'vue';
 import Marcher from '../components/Marcher.vue';
 import * as util from '../util/util';
 
 const proj = usePdStore();
-const selStore = useSelectionStore();
-const fStore = useFormStore();
+const selStore = useTempStore();
 const marchersEl: Ref<HTMLDivElement | null> = ref(null);
 const marcherRefs: Ref<any[]> = ref([]);
+const isAnimating = ref(false);
 
 onMounted(() => {
     proj.setMarcherRefs(marcherRefs);
@@ -65,12 +65,12 @@ function calcPositionOnDrag(e, displayOnly?) {
 
     const coord = fieldCoords(e, false);
 
-    if (coord && fStore.form?.dragStart && fStore.form.dragStartCenter) {
-        fStore.form.dragDeltaX = coord.x - fStore.form.dragStart.x;
-        fStore.form.centerX = fStore.form.dragStartCenter.x + fStore.form.dragDeltaX;
-        fStore.form.dragDeltaY = coord.y - fStore.form.dragStart.y;
-        fStore.form.centerY = fStore.form.dragStartCenter.y + fStore.form.dragDeltaY;
-        fStore.form.update(displayOnly);
+    if (coord && proj.form?.dragStart && proj.form.dragStartCenter) {
+        proj.form.dragDeltaX = coord.x - proj.form.dragStart.x;
+        proj.form.centerX = proj.form.dragStartCenter.x + proj.form.dragDeltaX;
+        proj.form.dragDeltaY = coord.y - proj.form.dragStart.y;
+        proj.form.centerY = proj.form.dragStartCenter.y + proj.form.dragDeltaY;
+        proj.form.update(displayOnly);
     }
 }
 
@@ -100,8 +100,8 @@ function onDragStart(e, isShift: boolean) {
         const startCoords = fieldCoords(e, false);
 
         if (startCoords) {
-            fStore.formOrGeneric.dragStart = { x: startCoords?.x, y: startCoords?.y };
-            fStore.formOrGeneric.dragStartCenter = { ...selStore.selection.centerCurrent };
+            proj.formOrGeneric.dragStart = { x: startCoords?.x, y: startCoords?.y };
+            proj.formOrGeneric.dragStartCenter = { ...selStore.selection.centerCurrent };
         }
     } else {
         e.preventDefault();
@@ -124,7 +124,8 @@ function onMarcherTap(type: string, drillNumber: string) {
 }
 
 defineExpose({
-    marchersEl
+    marchersEl,
+    isAnimating
 })
 
 </script>

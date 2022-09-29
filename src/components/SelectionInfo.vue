@@ -1,31 +1,31 @@
 <template>
-    <div v-if='selStore.selection.length > 0' class="sel-hover info">
+    <div v-if='tempStore.selection.length > 0' class="sel-hover info">
         <div>
-            {{ '[selection of ' + selStore.selection.length + ']' }}
+            {{ '[selection of ' + tempStore.selection.length + ']' }}
             <br />
-            {{ util.fieldX(selStore.selection.center.x)}}
+            {{ util.fieldX(tempStore.selection.center.x)}}
             <br />
-            {{ util.fieldY(selStore.selection.center.y)}}
+            {{ util.fieldY(tempStore.selection.center.y)}}
             <br />
-            {{ selStore.selection.targets.items.map(i => i?.element?.getAttribute('drillNumber')).join(', ')}}
+            {{ tempStore.selection.targets.items.map(i => i?.element?.getAttribute('drillNumber')).join(', ')}}
         </div>
     </div>
-    <div v-else-if='selStore.hoveredEl' class="sel-hover info">
+    <div v-else-if='tempStore.hoveredEl' class="sel-hover info">
         <div>
-            {{selStore.hoveredEl?.getAttribute('drillNumber') }}
+            {{tempStore.hoveredEl?.getAttribute('drillNumber') }}
             <br />
-            {{ util.fieldX(selStore.hoveredEl?.getAttribute('x'))}}
+            {{ util.fieldX(tempStore.hoveredEl?.getAttribute('x'))}}
             <br />
-            {{ util.fieldY(selStore.hoveredEl?.getAttribute('y'))}}
+            {{ util.fieldY(tempStore.hoveredEl?.getAttribute('y'))}}
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { useSelectionStore } from '@/stores/DrillProject';
+import { useTempStore } from '@/stores/DrillProject';
 import * as util from '../util/util'
 
-const selStore = useSelectionStore();
+const tempStore = useTempStore();
 
 </script>
 

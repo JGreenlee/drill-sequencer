@@ -1,6 +1,6 @@
+import { usePdStore, useTempStore } from "@/stores/DrillProject";
 import type { MarcherSelection } from "@/stores/MarcherSelection";
 import type { Coord } from "@/stores/ProjectTypes";
-import { useDark } from "@vueuse/core";
 
 export abstract class Form {
 
@@ -20,14 +20,21 @@ export abstract class Form {
 
     abstract args;
 
-    constructor(selection: MarcherSelection) {
-        this.selection = selection;
-        const center = {...this.selection.centerCurrent} as Coord;
+    constructor() {
+        this.selection = useTempStore().selection;
+        const center = { ...this.selection.centerCurrent } as Coord;
         this.centerX = center.x;
         this.centerY = center.y;
     }
 
-    abstract update(displayOnly?: boolean)
+    abstract recalculate(displayOnly?)
+
+    update(displayOnly?: boolean) {
+        this.recalculate();
+        if (!displayOnly) {
+            usePdStore().pushChange();
+        }
+    }
 
     apply() {
         if (!this.applied) {

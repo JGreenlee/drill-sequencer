@@ -3,29 +3,30 @@
     <KeyEvents
       @keyup.space="debug()"
       @keyup.ctrl.z="proj.undo()"
+      @keyup.ctrl.q.prevent="proj.pushChange()"
       @keyup.ctrl.y="proj.redo()"
       @keyup.p="field.togglePerspective()"
       @keyup.a="selectAll"
-      @keyup.o="(fStore.form as any) = new CircleForm(selStore.selection)"
+      @keyup.o="(proj.form as any) = new CircleForm()"
       @keyup.b="makeBlock(true)"
-      @keyup.+="fStore.formOrGeneric.scale(1.25, 1.25)"
-      @keyup.-="fStore.formOrGeneric.scale(.8, .8)"
-      @keyup.[="fStore.formOrGeneric.rotate(-8)"
-      @keyup.]="fStore.formOrGeneric.rotate(8)"
-      @keyup.up="fStore.formOrGeneric.move(0, 2)"
-      @keyup.right="fStore.formOrGeneric.move(2, 0)"
-      @keyup.down="fStore.formOrGeneric.move(0, -2)"
-      @keyup.left="fStore.formOrGeneric.move(-2, 0)"
-      @keyup.enter.stop="fStore.form?.apply()"
+      @keyup.+="proj.formOrGeneric.scale(1.25, 1.25)"
+      @keyup.-="proj.formOrGeneric.scale(.8, .8)"
+      @keyup.[="proj.formOrGeneric.rotate(-8)"
+      @keyup.]="proj.formOrGeneric.rotate(8)"
+      @keyup.up="proj.formOrGeneric.move(0, 2)"
+      @keyup.right="proj.formOrGeneric.move(2, 0)"
+      @keyup.down="proj.formOrGeneric.move(0, -2)"
+      @keyup.left="proj.formOrGeneric.move(-2, 0)"
+      @keyup.enter.stop="proj.form?.apply()"
       @keyup.esc.stop="escape" />
     <div class="wrapper" ref="wrapper">
       <Field ref="field"></Field>
       <div class="timeline">
-        <button class="play" @click="play">▶</button>
+        <button class="play-pause" @click="playPause">{{field?.marchers?.isAnimating?'⏸':'▶'}}</button>
         <button class="create-picture" @click="proj.newPicture()">+</button>
         <ul class="pictures" @mouseout="proj.tempCurrentPictureId = ''">
           <li v-for="pic in proj.getPictures()" @mouseover="proj.tempCurrentPictureId = pic.pictureId"
-            :class="{selected: proj.storedCurrentPictureId == pic.pictureId}">
+            :class="{selected: proj.storedCurrentPictureId == pic.pictureId, shown: proj.tempCurrentPictureId == pic.pictureId}">
             <button @click="proj.setCurrentPicture(pic.pictureId)">
               {{pic.pictureId}}
             </button>
@@ -36,21 +37,24 @@
         </ul>
       </div>
     </div>
+    <SelectionInfo />
+    <PendingInfo />
   </main>
 </template>
 <script setup lang="ts">
 
 import KeyEvents from '../components/keyevents.vue'
 import Field from './Field.vue'
-import { useFormStore, usePdStore, useSelectionStore } from '../stores/DrillProject';
+import SelectionInfo from '../components/SelectionInfo.vue';
+import PendingInfo from '../components/PendingInfo.vue';
 import { onMounted, ref } from 'vue';
 import { makeBlock } from '../util/formOperations';
 
 import { CircleForm } from '@/forms/CircleForm';
+import { usePdStore, useTempStore } from '@/stores/DrillProject';
 
 const proj: any = usePdStore();
-const selStore = useSelectionStore();
-const fStore = useFormStore();
+const selStore = useTempStore();
 
 const main = ref<HTMLDivElement>();
 const wrapper: any = ref<HTMLDivElement>();
@@ -60,7 +64,7 @@ const field = ref();
 // for debugging
 const log = console.log;
 function debug() {
-  console.log(fStore.form);
+
 }
 
 onMounted(() => {
@@ -84,8 +88,9 @@ function resizeField() {
   field.value.field.style.setProperty('--field-width', fieldWidth);
 }
 
-function play() {
-  field.value.animating = true;
+function playPause() {
+  log(field.value.marchers);
+  field.value.marchers.isAnimating = !field.value.marchers.isAnimating;
   field.value.marchers.marchersEl.classList.toggle('animating');
   field.value.field.addEventListener('animationend', animationEnd)
 }
@@ -94,16 +99,17 @@ function animationEnd(e) {
   if (e.animationName != 'empty') return;
   field.value.field.removeEventListener('animationend', animationEnd);
   const nextPictureId = proj.nextPictureId;
-  log('next',nextPictureId)
+  log('next', nextPictureId)
   if (nextPictureId) {
     // log('setnext', nextPictureId)
-    proj.setCurrentPicture(nextPictureId);
+    proj.tempCurrentPictureId = nextPictureId;
     field.value.field.addEventListener('animationend', animationEnd);
     if (!proj.nextPictureId) {
+      field.value.marchers.isAnimating = false;
       field.value.marchers.marchersEl.classList.remove('animating');
     }
   } else {
-    field.value.animating = false;
+    field.value.marchers.isAnimating = false;
     field.value.marchers.marchersEl.classList.remove('animating');
   }
 }
@@ -115,8 +121,8 @@ function selectAll() {
 }
 
 function escape() {
-  if (fStore.form) {
-    fStore.form.cancel(); fStore.form = null;
+  if (proj.form) {
+    proj.form.cancel(); proj.form = null;
   } else {
     proj.reset(true, true, true);
   }
@@ -133,38 +139,49 @@ main {
   justify-content: center;
 }
 
-
-.wrapper {
-  perspective: 100vw;
-  user-select: none;
-
-  &:has(.field.perspective) * {
-    transform-style: preserve-3d;
-  }
-}
-
 .timeline {
   display: flex;
   width: 100vw;
   height: 2rem;
   background: rgb(50 50 50 / .8);
+  padding: .2rem;
+
+  &>button {
+    width: 2rem;
+  }
 }
 
 .pictures {
+  display: flex;
+  align-items: center;
   list-style: none;
-  padding: 0;
 }
 
 .pictures li {
   display: inline;
+  // position: relative;
   opacity: .9;
 
   &:hover {
     opacity: 1;
   }
 
+  &.shown {
+    opacity: 1;
+
+    &>button {
+      background-color: hsl(var(--hue-selection) 100% 92%);
+      filter: brightness(150%);
+    }
+  }
+
   & button {
+    // position: absolute;
     background: white;
+    line-height: 1;
+    // top: 0;
+    // transform: translateY(-50%);
+    transition: .1s border;
   }
 
   &.selected>button {

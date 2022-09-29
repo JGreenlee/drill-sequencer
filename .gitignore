@@ -27,3 +27,6 @@ coverage
 *.sln
 *.sw?
 .vscode
+
+# Project
+scratchpad.json
