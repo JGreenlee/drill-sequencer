@@ -1,88 +1,107 @@
 <template>
-  <div ref="marcherEl" draggable="true" :drillNumber="drillNumber" :class="{marcher: true, selected: isSelected}"
+  <div ref="marcherEl" v-bind="$attrs"
+    draggable="true" :drillNumber="props.drillNumber" class="marcher"
+    :class="{'selected': isSelected, 'form-selected': proj.form?.marcherDrillNumbers?.includes(props.drillNumber)}"
     :storedX="storedCoord.x" :storedY="storedCoord.y"
-    :x="util.roundCalc(currentCoord.x)" :nextX="nextCoord?.x"
-    :y="util.roundCalc(currentCoord.y)" :nextY="nextCoord?.y"
-    :storedBearing="coordFromSel.bearing"
-    :style="{left: util.roundUi(currentCoord.x) / 1.6 + '%', top: (84 - util.roundUi(currentCoord.y)) / 0.84 + '%'}"
-    @click.exact="$emit('tap', '', drillNumber)"
-    @click.shift="$emit('tap', 'shift', drillNumber)"
-    @animationend="e => util.resetAnimation(e.target)">
+    :x="calc.round(currentCoord.x)" :nextX="nextCoord?.x"
+    :y="calc.round(currentCoord.y)" :nextY="nextCoord?.y"
+    :style="{left: ui.round(currentCoord.x) / 1.6 + '%', top: (84 - ui.round(currentCoord.y)) / 0.84 + '%'}"
+    @click.exact="emit('tap', '', props.drillNumber)"
+    @click.shift="emit('tap', 'shift', props.drillNumber)"
+    @animationend="e => ui.resetAnimation(e.target)">
     <div ref="selectable" class="selectable">
     </div>
     <img src="../assets/bksprite.svg" draggable="false" />
     <img class="shadow" src="../assets/bksprite.svg" draggable="false" />
-    <span>{{drillNumber}}</span>
+    <span>{{props.drillNumber}}</span>
   </div>
+  <svg v-if="ghostCoord" class="ghost-path overlay" width="100%" height="100%" viewBox="0 0 160 84"
+    xmlns="http://www.w3.org/2000/svg">
+    <line :x1="currentCoord.x" :y1="84-currentCoord.y" :x2="ghostCoord.x" :y2="84-ghostCoord.y" stroke-width="0.05" />
+  </svg>
 </template>
 
 <script setup lang="ts">
 
+import { onMounted, reactive } from 'vue';
+import { $computed, $ref, $$ } from 'vue/macros';
+
 import { usePdStore, useTempStore } from '@/stores/DrillProject';
-import type { Coord } from '../stores/ProjectTypes';
-import { onMounted, reactive, ref, watch, type Ref } from 'vue';
-import { computed } from '@vue/reactivity';
+import type { Coord } from '@/util/ProjectTypes';
+import * as ui from '@/util/ui';
+import * as calc from '@/util/calc';
 
-import * as util from '../util/util';
-
-let isMounted = ref(false);
-const marcherEl: Ref<HTMLDivElement | null> = ref(null);
-const selectable: Ref<HTMLDivElement | null> = ref(null);
+let isMounted: boolean = $ref(false);
+const marcherEl: HTMLDivElement = $ref();
+// const ghostEl: HTMLDivElement = $ref();
+const selectable: HTMLDivElement = $ref();
 const props = defineProps(['x', 'y', 'drillNumber']);
+const emit = defineEmits(['tap']);
 
-let proj = usePdStore();
+const proj = usePdStore();
 const tempStore = useTempStore();
 
-const currentCoord: Coord = reactive({
+let currentCoord: Coord = reactive({
   x: 80,
   y: 56
 });
-const x = computed(() => currentCoord.x);
-const y = computed(() => currentCoord.y);
+const x = $computed(() => currentCoord.x);
+const y = $computed(() => currentCoord.y);
 
-const nextCoord = computed(() => {
+const prevCoord = $computed(() => {
+  const prevC = proj.getMarcherDot(props.drillNumber, proj.currentPictureId, -1);
+  return prevC;
+});
+
+const nextCoord = $computed(() => {
   const nextC = proj.getMarcherDot(props.drillNumber, proj.currentPictureId, 1);
   if (nextC) {
-    marcherEl.value?.style.setProperty('--nextLeft', util.roundUi(nextC.x) / 1.6 + '%');
-    marcherEl.value?.style.setProperty('--nextTop', (84 - util.roundUi(nextC.y)) / 0.84 + '%');
+    marcherEl?.style.setProperty('--nextLeft', ui.round(nextC.x) / 1.6 + '%');
+    marcherEl?.style.setProperty('--nextTop', (84 - ui.round(nextC.y)) / 0.84 + '%');
   }
   return nextC;
 });
 
-const coordFromSel = reactive({
-  x: computed(() => currentCoord.x - tempStore.selection.center.x),
-  y: computed(() => currentCoord.y - tempStore.selection.center.y),
-  bearing: computed(() => util.calcBearing(tempStore.selection.center.x, tempStore.selection.center.y, storedCoord.value.x, storedCoord.value.y))
+const ghostCoord = $computed(() => {
+  if (marcherEl?.parentElement?.classList.contains('animating')) {
+    return nextCoord;
+  } else {
+    return prevCoord;
+  }
 });
 
-const isSelected = computed(() => {
-  if (!isMounted.value) return;
-  if (!marcherEl.value) return console.error('marcherEl is null for marcher ', props.drillNumber);
-  return tempStore.selection.includes(marcherEl.value!);
+const isSelected = $computed(() => {
+  if (!isMounted) return;
+  if (!marcherEl) return console.error('marcherEl is null for marcher ', props.drillNumber);
+  return tempStore.selection.includes(props.drillNumber);
 });
+
+const formId = $computed(() =>
+  proj.getMarchers().find(m => m.drillNumber == props.drillNumber)?.dots[proj.currentPictureId]?.formId
+)
 
 onMounted(() => {
-  currentCoord.x = storedCoord.value.x;
-  currentCoord.y = storedCoord.value.y;
-  isMounted.value = true;
+  currentCoord.x = storedCoord.x;
+  currentCoord.y = storedCoord.y;
+  isMounted = true;
 });
 
-const storedCoord = computed(() => {
+const storedCoord = $computed(() => {
   const c = proj.getMarcherDot(props.drillNumber, proj.currentPictureId) || { x: 999, y: -999 }
   setCurrentCoord(c.x, c.y);
-  marcherEl.value?.style.setProperty('--storedLeft', util.roundUi(c.x) / 1.6 + '%');
-  marcherEl.value?.style.setProperty('--storedTop', (84 - util.roundUi(c.y)) / 0.84 + '%');
+  marcherEl?.style.setProperty('--storedLeft', ui.round(c.x) / 1.6 + '%');
+  marcherEl?.style.setProperty('--storedTop', (84 - ui.round(c.y)) / 0.84 + '%');
   return (c);
 });
 
 function setDisplayCoord(newX, newY) {
-  marcherEl.value!.style.left = newX / 1.6 + '%';
-  marcherEl.value!.style.top = (84 - newY) / .84 + '%';
+  marcherEl.style.left = newX / 1.6 + '%';
+  marcherEl.style.top = (84 - newY) / .84 + '%';
 }
 
 function setCurrentCoord(newX, newY) {
-  currentCoord.x = util.roundCalc(util.clamp(newX, 0, 160));
-  currentCoord.y = util.roundCalc(util.clamp(newY, 0, 84));
+  currentCoord.x = calc.round(calc.clamp(newX, 0, 160));
+  currentCoord.y = calc.round(calc.clamp(newY, 0, 84));
 }
 
 function setStoredCoord(newX, newY) {
@@ -90,21 +109,32 @@ function setStoredCoord(newX, newY) {
   applyCurrentCoord();
 }
 
+function setCurrentCoordByRef(c: Coord) {
+  currentCoord = c;
+}
+
+function setStoredCoordByRef(c: Coord) {
+  setCurrentCoordByRef(c);
+  currentCoord = c;
+}
+
 function applyCurrentCoord() {
   proj.setMarcherDot(props.drillNumber, proj.currentPictureId, currentCoord);
 }
 
-defineExpose({
+defineExpose($$({
   drillNumber: props.drillNumber,
   currentCoord, x, y,
-  marcher: marcherEl,
+  marcherEl,
+  formId,
   storedCoord,
-  coordFromSel,
+  prevCoord,
   setCurrentCoord,
   setDisplayCoord,
   setStoredCoord,
-  applyCurrentCoord,
-});
+  setCurrentCoordByRef,
+  setStoredCoordByRef,
+}));
 
 </script>
 
@@ -117,7 +147,7 @@ defineExpose({
   translate: -50% -100%;
   width: 1%;
   aspect-ratio: 1;
-  filter: drop-shadow(0vw -0.4vw 0.2vw rgba(0, 0, 0, 0));
+  filter: drop-shadow(0em -0.4em 0.2em rgba(0, 0, 0, 0));
   transform: rotateX(0);
   transform-origin: bottom;
   cursor: grab;
@@ -130,32 +160,65 @@ defineExpose({
   &:after {
     content: "";
     position: absolute;
-    border-left: .5vw solid transparent;
-    border-right: .5vw solid transparent;
-    border-top: 1vw solid rgb(10 10 10 / 90%);
-    translate: -50% 0;
+    width: 0.7em;
+    height: 0.5em;
+    bottom: 0;
+    background: rgb(10 10 10 / .9);
+    clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
+    translate: -50%;
   }
 }
 
 .marcher span {
+  bottom: 0;
   opacity: 1;
-  transform: translate(-50%, 20%);
-  font-family: 'Barlow Condensed', sans-serif;
-  width: min-content;
-  height: 100%;
-  font-size: .8vw;
-  z-index: 999;
+  line-height: 1em;
+  font-family: "Barlow Condensed", sans-serif;
+  width: unset;
+  height: unset;
+  padding-bottom: 0.27em;
   font-weight: 900;
   color: white;
-  text-shadow: 0.1vw 0.1vw black, -0.1vw -0.1vw black;
-  -webkit-text-stroke: .2vw .2vw black;
-  color: white;
+  scale: 0.8;
+  translate: -50% 0%;
+  z-index: 999;
   text-shadow:
     //  .2vw .2vw 0 #000,
     -.1vw -.1vw 0 #000,
     .1vw -.1vw 0 #000,
     -.1vw .1vw 0 #000,
     .1vw .1vw 0 #000;
+}
+
+.ghost-path {
+  stroke: black;
+  opacity: .5;
+  z-index: -1;
+  pointer-events: none;
+  animation: .2s ease-in fade-in forwards;
+}
+
+.field.perspective .marchers.animating .ghost-path {
+  display: none;
+}
+
+.marcher.form-selected~.ghost-path {
+  opacity: 1;
+  stroke: hsl(330, 100%, 20%);
+
+  & line {
+    stroke-width: 0.1;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: .5;
+  }
 }
 
 .field.perspective {
@@ -181,6 +244,8 @@ defineExpose({
       opacity: 0;
     }
   }
+
+
 }
 
 .marcher * {
@@ -203,5 +268,13 @@ defineExpose({
   filter: brightness(110%) saturate(150%);
   outline: .1em solid hsl(var(--hue-selection) 100% 39% / 0.6);
   background-color: hsl(var(--hue-selection) 100% 39% / 0.3);
+}
+
+.marcher.form-selected .selectable {
+  filter: brightness(110%) saturate(150%);
+  outline: .1em solid hsl(220 100% 50% / 0.8);
+  // outline: .1em solid hsl(var(--hue-form-selection) 100% 39% / 0.6);
+  background-color: hsl(220 100% 50% / 0.5);
+  // background-color: hsl(var(--hue-form-selection) 100% 39% / 0.3);
 }
 </style>

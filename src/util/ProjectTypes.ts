@@ -1,8 +1,17 @@
+import type { Form } from "@/forms/Form";
+
 export type Coord = { x: number, y: number };
 
 export type Picture = {
     pictureId: string,
-    countsToNext: number
+    countsToNext: number,
+    forms: {
+        [formId: string]: Partial<Form>
+    }
+}
+
+export type FormData = {
+
 }
 
 export type MarcherData = {
@@ -10,7 +19,8 @@ export type MarcherData = {
     drillNumber: string,
     dots: {
         [pictureId: string]: {
-            coord: Coord
+            coord: Coord,
+            formId?: string
         }
     }
 }

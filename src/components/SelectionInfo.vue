@@ -3,9 +3,9 @@
         <div>
             {{ '[selection of ' + tempStore.selection.length + ']' }}
             <br />
-            {{ util.fieldX(tempStore.selection.center.x)}}
+            {{ ui.fieldX(tempStore.selection.center.x)}}
             <br />
-            {{ util.fieldY(tempStore.selection.center.y)}}
+            {{ ui.fieldY(tempStore.selection.center.y)}}
             <br />
             {{ tempStore.selection.targets.items.map(i => i?.element?.getAttribute('drillNumber')).join(', ')}}
         </div>
@@ -14,16 +14,16 @@
         <div>
             {{tempStore.hoveredEl?.getAttribute('drillNumber') }}
             <br />
-            {{ util.fieldX(tempStore.hoveredEl?.getAttribute('x'))}}
+            {{ ui.fieldX(tempStore.hoveredEl?.getAttribute('x'))}}
             <br />
-            {{ util.fieldY(tempStore.hoveredEl?.getAttribute('y'))}}
+            {{ ui.fieldY(tempStore.hoveredEl?.getAttribute('y'))}}
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import { useTempStore } from '@/stores/DrillProject';
-import * as util from '../util/util'
+import * as ui from '@/util/ui'
 
 const tempStore = useTempStore();
 

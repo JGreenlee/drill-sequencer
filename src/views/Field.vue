@@ -1,7 +1,7 @@
 
 <template>
   <div class="field-wrapper">
-    <div class="field" ref="field" :class="{perspective: isPerspective}">
+    <div class="field" ref="fieldEl" :class="{perspective: isPerspective}">
       <div class="side side1">
         <div v-for="n in 10" v-bind:num-labels="10">
           <span class="yardline-numbers">{{n%2==0 || !isPerspective ? n*5 : '' }}</span>
@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="tpl grid"></div>
-      <Marchers ref="marchers"></Marchers>
+      <Marchers ref="marchers" />
     </div>
   </div>
   <button class="toggle-perspective" @click="togglePerspective">perspective</button>
@@ -31,16 +31,17 @@
 </template>
 <script setup lang="ts">
 
-import Marchers from '../components/Marchers.vue'
-import { ref, type Ref } from 'vue';
+import { $ref, $$ } from 'vue/macros';
 import Selecto from 'vue3-selecto';
 
+import Marchers from '@/components/Marchers.vue'
 import { useTempStore } from '@/stores/DrillProject';
 
+const log = console.log;
 const tempStore = useTempStore();
-let isPerspective: Ref<boolean> = ref(false);
-const field = ref<HTMLDivElement>();
-const marchers = ref<HTMLDivElement>();
+let isPerspective: boolean = $ref(false);
+const fieldEl = $ref<HTMLDivElement | null>(null);
+const marchers = $ref<InstanceType<typeof Marchers> | null>(null);
 
 function onSelect(selectoEvent) {
   tempStore.selection.add(selectoEvent.added.map(s => s.parentElement));
@@ -48,14 +49,14 @@ function onSelect(selectoEvent) {
 }
 
 function togglePerspective() {
-  isPerspective.value = !isPerspective.value;
+  isPerspective = !isPerspective;
 }
 
-defineExpose({
-  field,
+defineExpose($$({
+  fieldEl,
   marchers,
   togglePerspective
-})
+}))
 
 </script>
 
@@ -77,13 +78,14 @@ defineExpose({
   --light-turf-green: hsl(var(--hue-editor) 3% 100% / 1);
   --yardlines-white: hsl(var(--hue-editor) 5% 50% / 1);
   --yardline-numbers-white: hsl(var(--hue-editor) 3% 36% / .5);
-  --yardline-thickness: .05vw;
+  --yardline-thickness: .05em;
   --tpl-major-grid-color: hsl(var(--hue-editor) 50% 17% / .5);
   --tpl-minor-grid-color: hsl(var(--hue-editor) 50% 37% / 0.25);
   --cam-level: .5;
   --x-rotation: calc(90deg * (1 - var(--cam-level)));
   --hash-distance: 33.4%;
-  font-size: calc(var(--field-width)*.012);
+  --em: calc(var(--field-width)*.012);
+  font-size: var(--em);
   width: 100%;
   max-width: var(--field-width);
   aspect-ratio: 40/21;
@@ -94,11 +96,11 @@ defineExpose({
   transition: transform .5s;
 
   &.perspective {
-    transform: rotateX(var(--x-rotation)) scale(1.1) translateY(-6vw);
+    transform: rotateX(var(--x-rotation)) scale(1.1) translateY(-6em);
     --dark-turf-green: hsl(124 50% 32% / .9);
     --light-turf-green: hsl(124 50% 36% / .9);
     --yardlines-white: hsl(124 44% 90% / 1);
-    --yardline-thickness: 0.1vw;
+    --yardline-thickness: 0.1em;
     --yardline-numbers-white: hsl(124 44% 90% / 1);
     --tpl-major-grid-color: rgb(0 0 0 / .5);
     --tpl-minor-grid-color: rgb(255 255 255 / .25);
@@ -161,50 +163,47 @@ defineExpose({
   z-index: -1;
 }
 
-.field.perspective .side1>div:not(:last-child) span:not(:empty):before {
+.yardline-numbers:before,
+.yardline-numbers:after {
   position: absolute;
-  content: '';
   width: 0;
   height: 0;
-  left: -1.3vw;
-  top: -0.3vw;
-  border-top: 0.3vw solid transparent;
-  border-bottom: 0.3vw solid transparent;
-  border-right: 1vw solid var(--yardlines-white);
+  top: calc(-0.3 * var(--em));
+  border: calc(0.3 * var(--em)) solid transparent;
 }
 
-.field.perspective .side2>div span:not(:empty):after {
-  position: absolute;
+.field.perspective .side1>div:not(:last-child) .yardline-numbers:not(:empty):before {
   content: '';
-  width: 0;
-  height: 0;
-  right: -.8vw;
-  top: -0.3vw;
-  border-top: 0.3vw solid transparent;
-  border-bottom: 0.3vw solid transparent;
-  border-left: 1vw solid var(--yardlines-white);
+  left: calc(-1.3 * var(--em));
+  border-right: var(--em) solid var(--yardlines-white);
 }
 
-.field .side>div span.yardline-numbers {
+.field.perspective .side2 .yardline-numbers:not(:empty):after {
+  content: '';
+  right: calc(-0.8 * var(--em));
+  border-left: var(--em) solid var(--yardlines-white);
+}
+
+.field .yardline-numbers {
   color: var(--yardline-numbers-white);
   text-align: center;
   padding: 0;
   position: absolute;
   left: 100%;
-  translate: calc(-50% + 0.32vw) 0;
+  translate: calc(-50% + calc(.32 * var(--em))) 0;
   top: 15.2%;
-  letter-spacing: .5vw;
-  font-size: 2.6vw;
+  letter-spacing: calc(.5*var(--em));
+  font-size: calc(2.6 * var(--em));
   font-weight: bold;
   z-index: 998;
 }
 
-.field.perspective .side>div span.yardline-numbers {
+.field.perspective .yardline-numbers {
   text-shadow:
-    0 0.15vw .1vw rgb(0 0 0 / 30%),
-    .15vw 0 .1vw rgb(0 0 0 / 30%),
-    0 -.15vw .1vw rgb(0 0 0 / 30%),
-    -.15vw 0 .1vw rgb(0 0 0 / 30%);
+    0 0.07em .05em rgb(0 0 0 / 12%),
+    .07em 0 .05em rgb(0 0 0 / 12%),
+    0 -.07em .05em rgb(0 0 0 / 12%),
+    -.07em 0 .05em rgb(0 0 0 / 12%);
 }
 
 .field .side>div span.yardline-numbers:nth-child(even) {
@@ -213,8 +212,8 @@ defineExpose({
 
 .field .side>div span.hash:not(.side2>div:last-child .hash) {
   position: absolute;
-  width: 1vw;
-  height: 0.3vw;
+  width: 1em;
+  height: 0.3em;
   background-color: var(--yardlines-white);
   right: 0;
   translate: 50% -50%;
@@ -269,8 +268,8 @@ defineExpose({
 }
 
 .info {
-  font-size: .8vw;
-  padding: .5vw;
+  font-size: .6rem;
+  padding: .4rem;
   line-height: 1;
   color: white;
   position: absolute;

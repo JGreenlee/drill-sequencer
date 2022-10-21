@@ -1,32 +1,49 @@
 <template>
   <main @click="debug()" ref="main">
     <KeyEvents
-      @keyup.space="debug()"
+      @keyup.space="playPause()"
+      @keyup.ctrl.c="proj.copy()"
+      @keyup.ctrl.v="proj.paste()"
       @keyup.ctrl.z="proj.undo()"
       @keyup.ctrl.q.prevent="proj.pushChange()"
       @keyup.ctrl.y="proj.redo()"
       @keyup.p="field.togglePerspective()"
       @keyup.a="selectAll"
-      @keyup.o="(proj.form as any) = new CircleForm()"
-      @keyup.b="makeBlock(true)"
-      @keyup.+="proj.formOrGeneric.scale(1.25, 1.25)"
-      @keyup.-="proj.formOrGeneric.scale(.8, .8)"
-      @keyup.[="proj.formOrGeneric.rotate(-8)"
-      @keyup.]="proj.formOrGeneric.rotate(8)"
-      @keyup.up="proj.formOrGeneric.move(0, 2)"
-      @keyup.right="proj.formOrGeneric.move(2, 0)"
-      @keyup.down="proj.formOrGeneric.move(0, -2)"
-      @keyup.left="proj.formOrGeneric.move(-2, 0)"
+      @keyup.i="proj.form = new LineForm()"
+      @keyup.o="proj.form = new CircleForm()"
+      @keyup.b="proj.form = new BlockForm()"
+      @keyup.+="proj.formOrGeneric().scale(1.25, 1.25)"
+      @keyup.-="proj.formOrGeneric().scale(.8, .8)"
+      @keyup.[="proj.formOrGeneric().rotate(-8)"
+      @keyup.]="proj.formOrGeneric().rotate(8)"
+      @keyup.up="proj.formOrGeneric().move(0, 2)"
+      @keyup.right="proj.formOrGeneric().move(2, 0)"
+      @keyup.down="proj.formOrGeneric().move(0, -2)"
+      @keyup.left="proj.formOrGeneric().move(-2, 0)"
       @keyup.enter.stop="proj.form?.apply()"
       @keyup.esc.stop="escape" />
     <div class="wrapper" ref="wrapper">
-      <Field ref="field"></Field>
+      <div @mousemove="field.marchers?.isAnimating || (proj.tempCurrentPictureId &&= '')">
+        <Field ref="field"></Field>
+      </div>
       <div class="timeline">
-        <button class="play-pause" @click="playPause">{{field?.marchers?.isAnimating?'⏸':'▶'}}</button>
-        <button class="create-picture" @click="proj.newPicture()">+</button>
-        <ul class="pictures" @mouseout="proj.tempCurrentPictureId = ''">
-          <li v-for="pic in proj.getPictures()" @mouseover="proj.tempCurrentPictureId = pic.pictureId"
-            :class="{selected: proj.storedCurrentPictureId == pic.pictureId, shown: proj.tempCurrentPictureId == pic.pictureId}">
+        <button class="play-pause" @click="playPause()" @keyup.space.prevent>
+          <b>{{field?.marchers?.isAnimating?'װ':'▶'}}</b>
+        </button>
+        <div class="button-column">
+          <button class="create-picture" @click="proj.newPicture()">
+            <i>+</i>
+          </button>
+          <button class="delete-picture" @click="proj.deletePicture(proj.currentPictureId)">
+            <i>-</i>
+          </button>
+        </div>
+        <ul class="pictures" @mouseout="!field?.marchers?.isAnimating && (proj.tempCurrentPictureId = '')">
+          <li v-for="pic in proj.pd.pictures"
+            :class="{ selected: proj.storedCurrentPictureId == pic.pictureId,
+                      shown: proj.tempCurrentPictureId == pic.pictureId,
+                      notshown: proj.tempCurrentPictureId && proj.tempCurrentPictureId != pic.pictureId
+            }" @mouseover="!field?.marchers?.isAnimating && (proj.tempCurrentPictureId = pic.pictureId)">
             <button @click="proj.setCurrentPicture(pic.pictureId)">
               {{pic.pictureId}}
             </button>
@@ -38,81 +55,89 @@
       </div>
     </div>
     <SelectionInfo />
-    <PendingInfo />
+    <FormInfo />
   </main>
 </template>
 <script setup lang="ts">
 
-import KeyEvents from '../components/keyevents.vue'
-import Field from './Field.vue'
-import SelectionInfo from '../components/SelectionInfo.vue';
-import PendingInfo from '../components/PendingInfo.vue';
-import { onMounted, ref } from 'vue';
-import { makeBlock } from '../util/formOperations';
+import { onMounted } from 'vue';
+import { $ref } from 'vue/macros';
 
-import { CircleForm } from '@/forms/CircleForm';
+import KeyEvents from '@/components/keyevents.vue'
+import SelectionInfo from '@/components/SelectionInfo.vue';
+import FormInfo from '@/components/FormInfo.vue';
+import Field from '@/views/Field.vue'
 import { usePdStore, useTempStore } from '@/stores/DrillProject';
+import { CircleForm } from '@/forms/CircleForm';
+import { BlockForm } from '@/forms/BlockForm';
+import { LineForm } from '@/forms/LineForm';
 
-const proj: any = usePdStore();
-const selStore = useTempStore();
+const proj = usePdStore();
+const tempStore = useTempStore();
 
-const main = ref<HTMLDivElement>();
-const wrapper: any = ref<HTMLDivElement>();
+const main: HTMLDivElement = $ref();
+const wrapper: HTMLDivElement = $ref();
 
-const field = ref();
+const field: InstanceType<typeof Field> = $ref();
 
 // for debugging
 function debug() {
-
 }
 
 onMounted(() => {
   resizeField();
-  ['resize', 'fullscreenchange'].forEach(ev =>
-    setTimeout(() => window.addEventListener(ev, resizeField)), 300);
+  ['resize', 'fullscreenchange'].forEach(evName =>
+    setTimeout(() => window.addEventListener(evName, resizeField)), 300);
 });
 
 function resizeField() {
-  if (!wrapper.value) return;
+  if (!wrapper) return;
   const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
   const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
   let fieldWidth: string;
-  if (vh < wrapper.value.offsetHeight) {
-    fieldWidth = 95 * (vh / wrapper.value.offsetHeight) + 'vw';
-  } else if (vw < wrapper.value.offsetWidth) {
-    fieldWidth = 95 * (vw / wrapper.value.offsetWidth) + 'vw';
+  if (vh < wrapper.offsetHeight) {
+    fieldWidth = 95 * (vh / wrapper.offsetHeight) + 'vw';
+  } else if (vw < wrapper.offsetWidth) {
+    fieldWidth = 95 * (vw / wrapper.offsetWidth) + 'vw';
   } else {
     fieldWidth = '95vw';
   }
-  field.value.field.style.setProperty('--field-width', fieldWidth);
+  field.fieldEl?.style.setProperty('--field-width', fieldWidth);
 }
 
 function playPause() {
-  field.value.marchers.isAnimating = !field.value.marchers.isAnimating;
-  field.value.marchers.marchersEl.classList.toggle('animating');
-  field.value.field.addEventListener('animationend', animationEnd)
+  proj.tempCurrentPictureId = '';
+
+  console.log(field);
+  console.log(field.marchers);
+
+  if (field.marchers) {
+    field.marchers.isAnimating = !field.marchers.isAnimating;
+    if (field.marchers.isAnimating)
+      proj.tempCurrentPictureId = proj.currentPictureId || '';
+  }
+
+  field.fieldEl?.addEventListener('animationend', animationEnd)
 }
 
 function animationEnd(e) {
   if (e.animationName != 'empty') return;
-  field.value.field.removeEventListener('animationend', animationEnd);
+  field.fieldEl?.removeEventListener('animationend', animationEnd);
   const nextPictureId = proj.nextPictureId;
   if (nextPictureId) {
     proj.tempCurrentPictureId = nextPictureId;
-    field.value.field.addEventListener('animationend', animationEnd);
+    field.fieldEl?.addEventListener('animationend', animationEnd);
     if (!proj.nextPictureId) {
-      field.value.marchers.isAnimating = false;
-      field.value.marchers.marchersEl.classList.remove('animating');
+      if (field.marchers) field.marchers.isAnimating = false;
     }
   } else {
-    field.value.marchers.isAnimating = false;
-    field.value.marchers.marchersEl.classList.remove('animating');
+    if (field.marchers) field.marchers.isAnimating = false;
   }
 }
 
 function selectAll() {
-  field.value.field.querySelectorAll('.field .marcher').forEach(e => {
-    selStore.selection.select(e);
+  field.fieldEl?.querySelectorAll('.field .marcher').forEach(e => {
+    tempStore.selection.select(e);
   });
 }
 
@@ -141,9 +166,28 @@ main {
   height: 2rem;
   background: rgb(50 50 50 / .8);
   padding: .2rem;
+  gap: .1rem;
 
   &>button {
     width: 2rem;
+    padding: 0;
+    margin: 0;
+  }
+
+  & .button-column {
+    display: flex;
+    flex-direction: column;
+
+    & button {
+      height: 50%;
+
+      & i {
+        position: absolute;
+        translate: -50% -50%;
+        left: 50%;
+        top: 50%;
+      }
+    }
   }
 }
 
@@ -158,17 +202,12 @@ main {
   // position: relative;
   opacity: .9;
 
-  &:hover {
-    opacity: 1;
+  &.notshown {
+    opacity: .6;
   }
 
   &.shown {
     opacity: 1;
-
-    &>button {
-      background-color: hsl(var(--hue-selection) 100% 92%);
-      filter: brightness(150%);
-    }
   }
 
   & button {

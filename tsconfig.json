@@ -6,7 +6,10 @@
     "paths": {
       "@/*": ["./src/*"]
     },
+    "lib": ["DOM", "ES2020"],
     "noImplicitAny": false,
+    "noImplicitThis": true,
+    "strict": true,
     "module": "ES2020",
     "target": "ES2020",
     "types": ["vite/client"]

@@ -3,6 +3,7 @@
   --color-text: #eee;
   --hue-editor: 240;
   --hue-selection: 280;
+  --hue-form-selection: 200;
 }
 
 *,
@@ -11,7 +12,6 @@
   box-sizing: border-box;
   margin: 0;
   position: relative;
-  font-weight: normal;
 }
 
 body {
@@ -31,7 +31,6 @@ body {
 #app {
   margin: 0 auto;
   height: 100vh;
-  font-weight: normal;
 }
 
 a,
@@ -45,4 +44,12 @@ a,
   a:hover {
     background-color: hsla(160, 100%, 37%, 0.2);
   }
+}
+
+.overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
 }

@@ -1,10 +1,13 @@
-<svg width="700" height="700" xmlns="http://www.w3.org/2000/svg">
+<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <filter id="a" x="0" y="0" width="1" height="1" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="linearRGB">
-      <feTurbulence result="turbulence" numOctaves="3" x="0%" y="0%" height="100%" width="100%" baseFrequency="1" stitchTiles="stitch"/>
-      <feSpecularLighting surfaceScale="12" specularConstant="10" specularExponent="20" lighting-color="hsl(0, 0%, 70%)" x="0%" y="0%" width="100%" height="100%" in="turbulence" result="specularLighting">
-        <feDistantLight azimuth="3" elevation="1"/>
+      <feTurbulence result="turbulence" numOctaves="1" x="0%" y="0%" height="100%" width="100%" baseFrequency=".5" stitchTiles="stitch"/>
+      <feSpecularLighting surfaceScale="12" specularConstant="5" specularExponent="20" lighting-color="hsl(0, 0%, 70%)" x="0%" y="0%" width="100%" height="100%" in="turbulence" result="specularLighting">
+        <feDistantLight azimuth="80" elevation="1"/>
       </feSpecularLighting>
+      <!-- <feDiffuseLighting in='noise' lighting-color='#fff' surfaceScale='40'>
+            <feDistantLight azimuth='45' elevation='1' />
+        </feDiffuseLighting> -->
     </filter>
   </defs>
   <path fill="hsl(0, 100%, 0%)" d="M0 0h700v700H0z"/>

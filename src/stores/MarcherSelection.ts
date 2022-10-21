@@ -1,90 +1,99 @@
-import { computed } from "@vue/reactivity";
-import { reactive, type ComputedRef } from "vue";
+import { reactive } from "vue";
 
-import * as util from '../util/util'
-import type { Coord } from "./ProjectTypes";
+import type Marcher from '@/components/Marcher.vue';
+import * as calc from '@/util/calc'
+import { usePdStore } from "./DrillProject";
 
 export class MarcherSelection {
 
     targets: { items: MarcherSelectionItem[] } = reactive({ items: [] });
-    asComponent;
-    // proj = projectDataStore();
-
-    constructor(asComponent) {
-        this.asComponent = asComponent;
-    }
 
     get length() { return this.targets.items.length; }
     includes = (x) => {
-        return this.targets.items.find(a => a.element == x || a.component == x);
+        return this.targets.items.find(a => a.drillNumber == x);
     }
 
     unselect(e?) {
-        if (e == undefined) {
+        if (!e == undefined) {
             this.targets.items = [];
-        } else if (e && this.includes(e)) {
+        } else if (e) {
             this.targets.items = this.targets.items.filter(i => i.element != e && i.component != e);
         }
     }
+
     select(marcherEl, isReplace?: boolean) {
         if (!marcherEl) return console.error('no marcher');
-        const item = new MarcherSelectionItem(marcherEl, this.asComponent);
+        const comp = usePdStore().asComponent(marcherEl);
+        if (comp.formId != undefined) {
+            console.log('c', comp);
+            usePdStore().editForm(comp.formId);
+        }
+        const item = new MarcherSelectionItem(comp.drillNumber);
         if (isReplace) {
             this.targets.items = [item];
-        } else if (!this.includes(marcherEl)) {
+        } else if (!this.includes(comp.drillNumber)) {
             this.targets.items.push(item);
         }
     }
-    add(toAdd: any[]) {
+
+    add(toAdd: []) {
         toAdd.forEach((e) => {
             this.select(e);
         })
     }
-    remove(toRemove: any[]) {
+
+    remove(toRemove: []) {
         toRemove.forEach((e) => {
             this.unselect(e);
         });
     }
-    center: Coord | ComputedRef<Coord> = computed<Coord>(() => {
+
+    get center() {
         let sumX = 0, sumY = 0;
         this.targets.items.forEach((t) => {
             sumX += t.component.storedCoord.x;
             sumY += t.component.storedCoord.y;
         });
         return {
-            x: util.roundCalc(sumX / (this.length || 1)),
-            y: util.roundCalc(sumY / (this.length || 1))
+            x: calc.round(sumX / (this.length || 1)),
+            y: calc.round(sumY / (this.length || 1))
         };
-    });
+    }
 
-    centerCurrent: Coord | ComputedRef<Coord> = computed(() => {
+    get centerCurrent() {
         let sumX = 0, sumY = 0;
         this.targets.items.forEach((i) => {
             sumX += i.component.currentCoord.x;
             sumY += i.component.currentCoord.y;
         });
         return {
-            x: util.roundCalc(sumX / (this.length || 1)),
-            y: util.roundCalc(sumY / (this.length || 1))
+            x: calc.round(sumX / (this.length || 1)),
+            y: calc.round(sumY / (this.length || 1))
         };
-    });
+    }
 }
 
 export class MarcherSelectionItem {
-    element: HTMLDivElement;
-    storedComponent?: any;
-    asComponent;
-    // proj = projectDataStore();
 
-    constructor(el, asComponent) {
-        this.element = el;
-        this.asComponent = asComponent;
+    doNotSerialize = ['storedElement', 'storedComponent', 'tempData'];
+    drillNumber: string;
+    storedElement?: HTMLDivElement;
+    storedComponent?: InstanceType<typeof Marcher>;
+    tempData?: any;
+
+    constructor(drillNumber) {
+        this.drillNumber = drillNumber;
     }
 
-    component : any = computed(() => {
-        if (!this.storedComponent) {
-            this.storedComponent = this.asComponent(this.element);
-        }
-        return this.storedComponent;
-    });
+    get component(): InstanceType<typeof Marcher> {
+        if (!this.storedComponent)
+            this.storedComponent = usePdStore().asComponent(this.drillNumber);
+        return this.storedComponent!;
+    }
+
+    get element(): HTMLDivElement {
+        if (!this.storedElement)
+            this.storedElement = this.component.marcherEl;
+        return this.storedElement!;
+    }
 }

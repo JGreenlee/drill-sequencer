@@ -1,14 +1,15 @@
 <template>
-    <div class="marchers no-transition" ref="marchersEl" draggable="true"
-        @animationend="e => util.resetAnimation(e.target)"
+    <div class="marchers" :class="{'animating': isAnimating, 'no-transition': isAnimating}" ref="marchersEl"
+        draggable="true"
+        @animationend.self="e => ui.resetAnimation(e.target)"
         @dragstart.exact="onDragStart($event,false)"
         @dragstart.shift="onDragStart($event,true)"
         @drag="onDrag" @dragend="onDragEnd"
         @dragenter="dropAllowed" @dragover="dropAllowed"
-        @mousedown.self.exact="if (proj.form) proj.form.apply(); selStore.selection.unselect()">
+        @mousedown.self.exact="if (proj.form) proj.form.apply(); tempStore.selection.unselect()">
         <Marcher v-for="marcher in proj.getMarchers()" :drillNumber="marcher.drillNumber" @tap="onMarcherTap"
-            @mouseover="e => selStore.hoveredEl = e.target.closest('.marcher')"
-            @mouseout="e => selStore.hoveredEl == e.target.closest('.marcher') ? selStore.hoveredEl = undefined : ''"
+            @mouseover="e => tempStore.hoveredEl = (e.target as Element)?.closest('.marcher')"
+            @mouseout="e => {if (tempStore.hoveredEl == (e.target as Element)?.closest('.marcher')) tempStore.hoveredEl = null}"
             :ref="pushMarcherRef" />
         <div class="handle nw"></div>
         <div class="handle ne"></div>
@@ -19,45 +20,46 @@
 
 <script setup lang="ts">
 
+import { onMounted } from 'vue';
+import { $ref, $$ } from 'vue/macros';
+
 import { usePdStore, useTempStore } from '@/stores/DrillProject';
-import type { Coord } from '@/stores/ProjectTypes';
-import { onMounted, ref, type Ref } from 'vue';
-import Marcher from '../components/Marcher.vue';
-import * as util from '../util/util';
+import type { Coord } from '@/util/ProjectTypes';
+import Marcher from '@/components/Marcher.vue';
+import * as ui from '@/util/ui';
 
 const proj = usePdStore();
-const selStore = useTempStore();
-const marchersEl: Ref<HTMLDivElement | null> = ref(null);
-const marcherRefs: Ref<any[]> = ref([]);
-const isAnimating = ref(false);
+const tempStore = useTempStore();
+const marchersEl: HTMLDivElement = $ref();
+const marcherRefs: InstanceType<typeof Marcher>[] = $ref([]);
+const isAnimating: boolean = $ref(false);
 
 onMounted(() => {
     proj.setMarcherRefs(marcherRefs);
     setTimeout(() => {
-        marchersEl.value?.classList.remove('no-transition')
+        marchersEl?.classList.remove('no-transition');
     }, 100);
 });
 
 function pushMarcherRef(r) {
-    marcherRefs.value.push(r);
+    marcherRefs.push(r);
 }
 
 function fieldCoords(e, round) {
 
-    if (!e.target || !(e.target instanceof HTMLElement) || !e.clientX || !e.clientY
-        || !marchersEl.value) return
+    if (!e.target || !(e.target instanceof HTMLElement) || !e.clientX || !e.clientY || !marchersEl) return
 
     let coord: Coord | undefined;
-    if (marchersEl.value.parentElement?.classList.contains('perspective')) {
-        const c = util.convertPointFromPageToNode(marchersEl.value, e);
+    if (marchersEl.parentElement?.classList.contains('perspective')) {
+        const c = ui.convertPointFromPageToNode(marchersEl, e);
         if (c) {
             coord = c;
         }
     } else {
-        let parentBounds = marchersEl.value.getBoundingClientRect();
+        let parentBounds = marchersEl.getBoundingClientRect();
         coord = {
-            x: (e.clientX - parentBounds.left) / marchersEl.value.clientWidth,
-            y: (parentBounds.bottom - e.clientY) / marchersEl.value.clientHeight
+            x: (e.clientX - parentBounds.left) / marchersEl.clientWidth,
+            y: (parentBounds.bottom - e.clientY) / marchersEl.clientHeight
         }
     }
     if (coord) {
@@ -92,22 +94,22 @@ function onDragStart(e, isShift: boolean) {
 
     if (e && e.target instanceof HTMLElement && (e.target as HTMLElement).classList.contains('marcher')) {
 
-        marchersEl.value?.classList.add('no-transition');
-
+        marchersEl?.classList.add('no-transition');
         e.dataTransfer.setDragImage(e.target, -99999, -99999);
         e.dataTransfer.effectAllowed = 'move';
 
-        if (marchersEl.value) {
-            const mEl: HTMLDivElement | null = marchersEl.value.querySelector(`[drillNumber=${e.target.getAttribute('drillNumber')}]`);
-            const notReplace = isShift || (mEl != null && selStore.selection.includes(mEl));
-            selStore.selection.select(mEl, !notReplace);
+        if (marchersEl) {
+            const dn = e.target.getAttribute('drillNumber');
+            const mEl: HTMLDivElement | null = marchersEl.querySelector(`[drillNumber=${dn}]`);
+            const notReplace = isShift || (mEl != null && tempStore.selection.includes(dn));
+            tempStore.selection.select(mEl, !notReplace);
         }
 
         const startCoords = fieldCoords(e, false);
 
         if (startCoords) {
-            proj.formOrGeneric.dragStart = { x: startCoords?.x, y: startCoords?.y };
-            proj.formOrGeneric.dragStartCenter = { ...selStore.selection.centerCurrent };
+            proj.formOrGeneric().dragStart = { x: startCoords?.x, y: startCoords?.y };
+            proj.formOrGeneric().dragStartCenter = { ...tempStore.selection.centerCurrent };
         }
     } else {
         e.preventDefault();
@@ -118,21 +120,21 @@ function onDragEnd(e) {
     if ((e?.target as HTMLElement).classList.contains('marcher')) {
         calcPositionOnDrag(e);
     }
-    marchersEl.value?.classList.remove('no-transition');
+    marchersEl?.classList.remove('no-transition');
 }
 
 const dropAllowed = e => { e.preventDefault(); e!.dataTransfer!.dropEffect = 'move' }
 
 function onMarcherTap(type: string, drillNumber: string) {
-    if (!marchersEl.value) return console.error('marchersEl ref was invalid');
-    const marcher: HTMLDivElement | null = marchersEl.value.querySelector(`[drillNumber=${drillNumber}]`);
-    selStore.selection.select(marcher, type != 'shift');
+    if (!marchersEl) return console.error('marchersEl ref was invalid');
+    const marcher: HTMLDivElement | null = marchersEl.querySelector(`[drillNumber=${drillNumber}]`);
+    tempStore.selection.select(marcher, type != 'shift');
 }
 
-defineExpose({
+defineExpose($$({
     marchersEl,
     isAnimating
-})
+}))
 
 </script>
 
@@ -169,20 +171,18 @@ defineExpose({
         animation: var(--marchToNextDuration) linear empty forwards;
         animation-play-state: running;
         transition: none;
+
+        & .marcher {
+            animation: var(--marchToNextDuration) linear marchToNext forwards;
+            animation-play-state: running;
+            transition: none;
+        }
     }
 
-    &.animating .marcher {
-        animation: var(--marchToNextDuration) linear marchToNext forwards;
-        animation-play-state: running;
-        transition: none;
-    }
-
-    &,
     & .marcher {
         animation-play-state: paused;
     }
 }
-
 
 .marchers.no-transition .marcher {
     transition: none !important;
