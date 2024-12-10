@@ -32,10 +32,11 @@
 <script setup lang="ts">
 
 import { $ref, $$ } from 'vue/macros';
-import Selecto from 'vue3-selecto';
-
+import { VueSelecto } from 'vue3-selecto';
 import Marchers from '@/components/Marchers.vue'
 import { useTempStore } from '@/stores/DrillProject';
+
+const Selecto = VueSelecto as any;
 
 const log = console.log;
 const tempStore = useTempStore();
