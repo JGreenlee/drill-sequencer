@@ -51,9 +51,6 @@ export abstract class Form {
     update(displayOnly?: boolean) {
         this.recalculate();
         this.assign(displayOnly);
-        if (!displayOnly) {
-            usePdStore().pushChange();
-        }
     }
 
     calcCosts(): number[][] {
@@ -115,7 +112,7 @@ export abstract class Form {
             });
         }
         usePdStore().clearForm();
-        usePdStore().pushChange();
+        // usePdStore().pushChange();
     }
 
     rotate(delta) {

@@ -87,7 +87,7 @@ export const usePdStore = defineStore('projectData', () => {
     if (form) {
       const forms = getPicture(currentPictureId)?.forms;
       if (!forms) throw TypeError('cannot save form when forms is falsy');
-      forms[newFormId] = Object.fromEntries(Object.entries(form).filter(([key]) => !form?.doNotSerialize?.includes(key)));
+      forms.push(Object.fromEntries(Object.entries(form).filter(([key]) => !form?.doNotSerialize?.includes(key))));
       form.marcherDrillNumbers.forEach(dn => {
         const dot = pd.value.marchers.find(m => m.drillNumber == dn)?.dots[currentPictureId];
         if (dot)
@@ -100,8 +100,8 @@ export const usePdStore = defineStore('projectData', () => {
   }
 
   function editForm(formId: string) {
-    console.log('editform');
-    const formData = getPicture(currentPictureId)?.forms[formId];
+    console.log('editform for picture', getPicture(currentPictureId));
+    const formData = getPicture(currentPictureId)?.forms.find(f => f.formId == formId);
     console.log(formData);
 
     if (formData) {
@@ -231,7 +231,7 @@ export const usePdStore = defineStore('projectData', () => {
     pd.value.pictures.splice(i + 1, 0, {
       pictureId: newPictureId + '',
       countsToNext: 8,
-      forms: {}
+      forms: []
     });
     setCurrentPicture(newPictureId);
     resetPicture(newPictureId);
@@ -279,17 +279,16 @@ export const usePdStore = defineStore('projectData', () => {
 
   // TODO reimplement undo/redo
   const undo = () => {
-    // const undo = stack.undo();
-    // patch(undo);
+    const undo = stack.undo();
+    patch(undo);
   }
   const redo = () => {
-    // const redo = stack.redo();
-    // patch(redo);
+    const redo = stack.redo();
+    patch(redo);
   }
   const pushChange = () => {
-    // const clone = ui.exclusiveStringify(getState());
-
-    // stack.push(clone);
+    const clone = ui.exclusiveStringify(getState());
+    stack.push(clone);
   }
 
   return $$({

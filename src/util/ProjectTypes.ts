@@ -5,9 +5,7 @@ export type Coord = { x: number, y: number };
 export type Picture = {
     pictureId: string,
     countsToNext: number,
-    forms: {
-        [formId: string]: Partial<Form>
-    }
+    forms: Partial<Form>[],
 }
 
 export type FormData = {

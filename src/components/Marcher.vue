@@ -110,12 +110,12 @@ function setStoredCoord(newX, newY) {
 }
 
 function setCurrentCoordByRef(c: Coord) {
-  currentCoord = c;
+  setCurrentCoord(c.x, c.y);
 }
 
 function setStoredCoordByRef(c: Coord) {
   setCurrentCoordByRef(c);
-  currentCoord = c;
+  applyCurrentCoord();
 }
 
 function applyCurrentCoord() {

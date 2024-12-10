@@ -6,7 +6,7 @@
         @dragstart.shift="onDragStart($event,true)"
         @drag="onDrag" @dragend="onDragEnd"
         @dragenter="dropAllowed" @dragover="dropAllowed"
-        @mousedown.self.exact="if (proj.form) proj.form.apply(); tempStore.selection.unselect()">
+        @mousedown.self.exact="proj.form?.apply(); tempStore.selection.unselect()">
         <Marcher v-for="marcher in proj.getMarchers()" :drillNumber="marcher.drillNumber" @tap="onMarcherTap"
             @mouseover="e => tempStore.hoveredEl = (e.target as Element)?.closest('.marcher')"
             @mouseout="e => {if (tempStore.hoveredEl == (e.target as Element)?.closest('.marcher')) tempStore.hoveredEl = null}"
@@ -27,6 +27,7 @@ import { usePdStore, useTempStore } from '@/stores/DrillProject';
 import type { Coord } from '@/util/ProjectTypes';
 import Marcher from '@/components/Marcher.vue';
 import * as ui from '@/util/ui';
+import { GenericForm } from '@/forms/GenericForm';
 
 const proj = usePdStore();
 const tempStore = useTempStore();
@@ -108,8 +109,12 @@ function onDragStart(e, isShift: boolean) {
         const startCoords = fieldCoords(e, false);
 
         if (startCoords) {
-            proj.formOrGeneric().dragStart = { x: startCoords?.x, y: startCoords?.y };
-            proj.formOrGeneric().dragStartCenter = { ...tempStore.selection.centerCurrent };
+            if (proj.form) {
+                proj.form.apply();
+            }
+            proj.form = new GenericForm();
+            proj.form.dragStart = { x: startCoords?.x, y: startCoords?.y };
+            proj.form.dragStartCenter = { ...tempStore.selection.centerCurrent };
         }
     } else {
         e.preventDefault();

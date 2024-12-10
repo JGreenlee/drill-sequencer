@@ -28,7 +28,7 @@
       </div>
       <div class="timeline">
         <button class="play-pause" @click="playPause()" @keyup.space.prevent>
-          <b>{{field?.marchers?.isAnimating?'װ':'▶'}}</b>
+          <b>{{ field?.marchers?.isAnimating ? 'װ' : '▶' }}</b>
         </button>
         <div class="button-column">
           <button class="create-picture" @click="proj.newPicture()">
@@ -158,6 +158,11 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .timeline {
