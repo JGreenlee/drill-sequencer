@@ -2,8 +2,6 @@
   <main @click="debug()" ref="main">
     <KeyEvents
       @keyup.space="playPause()"
-      @keyup.ctrl.c="proj.copy()"
-      @keyup.ctrl.v="proj.paste()"
       @keyup.ctrl.z="proj.undo()"
       @keyup.ctrl.q.prevent="proj.pushChange()"
       @keyup.ctrl.y="proj.redo()"
