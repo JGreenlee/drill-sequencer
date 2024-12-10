@@ -7,9 +7,9 @@
       @keyup.ctrl.y="proj.redo()"
       @keyup.p="field.togglePerspective()"
       @keyup.a="selectAll"
-      @keyup.i="proj.form = new LineForm()"
-      @keyup.o="proj.form = new CircleForm()"
-      @keyup.b="proj.form = new BlockForm()"
+      @keyup.i="newForm('LineForm')"
+      @keyup.o="newForm('CircleForm')"
+      @keyup.b="newForm('BlockForm')"
       @keyup.+="proj.formOrGeneric().scale(1.25, 1.25)"
       @keyup.-="proj.formOrGeneric().scale(.8, .8)"
       @keyup.[="proj.formOrGeneric().rotate(-8)"
@@ -67,10 +67,8 @@ import SelectionInfo from '@/components/SelectionInfo.vue';
 import FormInfo from '@/components/FormInfo.vue';
 import Field from '@/views/Field.vue'
 import { usePdStore, useTempStore } from '@/stores/DrillProject';
-import { CircleForm } from '@/forms/CircleForm';
-import { BlockForm } from '@/forms/BlockForm';
-import { LineForm } from '@/forms/LineForm';
 import Help from '@/components/Help.vue';
+import { formClasses } from '@/forms';
 
 const proj = usePdStore();
 const tempStore = useTempStore();
@@ -82,6 +80,10 @@ const field: InstanceType<typeof Field> = $ref();
 
 // for debugging
 function debug() {
+}
+
+const newForm = (className: keyof typeof formClasses) => {
+  proj.form = new (formClasses)[className]();
 }
 
 onMounted(() => {
