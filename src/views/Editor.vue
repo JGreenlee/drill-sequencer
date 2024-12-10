@@ -56,6 +56,7 @@
     </div>
     <SelectionInfo />
     <FormInfo />
+    <Help />
   </main>
 </template>
 <script setup lang="ts">
@@ -71,6 +72,7 @@ import { usePdStore, useTempStore } from '@/stores/DrillProject';
 import { CircleForm } from '@/forms/CircleForm';
 import { BlockForm } from '@/forms/BlockForm';
 import { LineForm } from '@/forms/LineForm';
+import Help from '@/components/Help.vue';
 
 const proj = usePdStore();
 const tempStore = useTempStore();
